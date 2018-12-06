@@ -1,0 +1,168 @@
+
+             AIDE - Advanced Intrusion Detection Environment
+            -------------------------------------------------
+                               Version 0.16
+
+    This file is free software; as a special exception the author gives
+    unlimited permission to copy and/or distribute it, with or without
+    modifications, as long as this notice is preserved.
+
+    This file is distributed in the hope that it will be useful, but
+    WITHOUT ANY WARRANTY, to the extend permitted by law; without even the
+    implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+
+
+    Introduction
+    ------------
+
+    AIDE is a tool for monitoring file system changes. It can be used
+    to detect unauthorized monitored files and directories. AIDE was
+    written to be a simple and free alternative to Tripwire. Features
+    currently included in AIDE are as follows:
+
+        o  File attributes monitored: perissions, inode, user, group
+           file size, mtime, atime, ctime, links and growing size.
+        o  Checksums and hashes supported: SHA1, MD5, RMD160, and TIGER.
+           CRC32, HAVAL and GOST if Mhash support is compiled in.
+        o  Plain text configuration files and database for simplicity.
+        o  Rules, variables and macros that can be customized to local
+           site or system policies.
+        o  Powerful regular expression support to selectively include or
+           exclude files and directories to be monitored.
+        o  gzip database compression if zlib support is compiled in.
+        o  Stand alone static binary for easy client/server monitoring
+           configurations.
+        o  Free software licensed under the GNU General Public License.
+
+
+    Current Version
+    ---------------
+
+    AIDE is currently maintained on the SourceForge. Details of the
+    latest version of AIDE can be found on the server project page under
+    http://sourceforge.net/projects/aide/.
+
+    Documentation
+    -------------
+
+    The documentation for AIDE can be found in the doc/ directory. The
+    most up-to-date documentation an be found on the SourceForge project
+    web site.
+
+    Installation
+    ------------
+    For generic instructions please see the INSTALL file.
+
+    For AIX 5.3 it has been reported there is a problem with using mhash
+    which causes an "Undefined symbol: .rpl_malloc" error. This is a problem
+    in mhash_config.h which can be fixed by removing the line that reads
+    #define malloc rpl_malloc
+
+    For Mac OS X Darwin/Leopard (10.4/10.5) and Solaris 10/OpenSolaris you need
+    to use --disable-static when configuring AIDE. Please note that dynamic
+    linking introduces a security risk and is not recommended.
+
+    Since Mac OS Leopard (10.5) you also need to use --disable-lfs because it
+    handles 64 bit file support out of the box.
+
+    Source Code Verification
+    ------------------------
+
+    We highly recommend checking that the version of AIDE downloaded and
+    installed is an original and unmodified one. You can either verify the
+    source tarball or the git tag.
+
+    To check the supplied signature with GnuPG:
+
+      $ gpg --verify aide-<VERSION_NUMBER>.tar.gz.asc
+
+    This checks that the detached signature file is indeed a signature
+    of aide-<VERSION_NUMBER>.tar.gz.
+
+    To validate the gpg signature of the git tag:
+
+      $ git verify-tag v<VERSION_NUMBER>
+
+    The current public key needed for signature verification is:
+
+        pub   4096R/68E7B931 2011-06-28 [expires: 2021-06-27]
+        uid                  Hannes von Haugwitz <hannes@vonhaugwitz.com>
+
+    If you do not have this key, you can get it from one of the well known PGP
+    key servers. You have to make sure that the key you install is not a faked
+    one. You can do this with reasonable assurance by comparing the output of:
+
+      $ gpg --fingerprint 0x68E7B931
+
+    with the fingerprint published elsewhere.
+
+    Requirements
+    ------------
+
+    AIDE requires the following development tools:
+
+       o  C compiler (such as Gcc).
+       o  GNU flex.
+       o  GNU yacc (bison).
+       o  GNU make.
+       o  PCRE library
+       o  Mhash (optional, but highly recommended). Mhash is currently
+          available from http://mhash.sourceforge.net/. A static version of
+          libmhash needs to be build using the --enable-static=yes
+          configure option.
+          Aide requires at least mhash version 0.9.2
+
+    Note:
+      flex version 2.5.31 is broken, you might see the following error
+
+       conf_lex.c: In function `conflex':
+       conf_lex.c:4728: error: `yy_prev_more_offset' undeclared (first use in
+       this function)
+       conf_lex.c:4728: error: (Each undeclared identifier is reported only once
+       conf_lex.c:4728: error: for each function it appears in.)
+
+      Either downgrade to flex 2.5.4 or get an updated version that fixes
+      this bug. See also:
+      http://sourceforge.net/tracker/index.php?func=detail&aid=866477&group_id=72099&atid=533377
+      http://sourceforge.net/mailarchive/message.php?msg_id=5415848
+      http://sourceforge.net/mailarchive/message.php?msg_id=5561246
+
+    Large File Support
+    -----------------
+
+    To be able to store the size of files larger than 2GB, aide needs
+    large file support (LFS) to be available in the OS. The configure
+    script automatically checks for the correct defines and functions.
+    If configure fails, and during compile time you see errors containing
+    the number 64, try configure again with the --disable-lfs option.
+    This turns off the large file support.
+
+    Cross Compilation
+    -----------------
+    When cross compiling, manually verify the data types defines in config.h
+    as they cannot be accurately determined by configure. Most notably,
+    AIDE_INO_TYPE will be set to "cross".
+
+    Feedback and Support
+    --------------------
+
+    End user support is available on the AIDE mailing list. To subscribe,
+    send a message to majordomo@cs.tut.fi with an empty Subject: line and
+    the following text as the BODY of the message:
+
+    subscribe aide
+
+    An archive for the mailing list archive is available online:
+
+        http://www.mail-archive.com/aide@cs.tut.fi/
+
+    To report bugs, contribute patches and contact the current team of
+    developers, visit the SourceForge project web site for additional info:
+
+        http://sourceforge.net/projects/aide/
+
+
+    Credits
+    ------- 
+
+    Please see the AUTHORS file.

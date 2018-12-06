@@ -1,0 +1,121 @@
+.TH AIDE 1 "Jul 25, 2016" "aide 0.16" "User Commands"
+.SH NAME
+\fBaide\fP \- Advanced Intrusion Detection Environment
+.SH SYNOPSIS
+\fBaide\fP
+\%[\fBparameters\fP]
+\%\fBcommand\fP
+.SH DESCRIPTION
+\fBAIDE\fP is an intrusion detection system for checking the integrity
+of files.
+
+.SH COMMANDS
+.PP
+.IP "--check, -C"
+Checks the database for inconsistencies. You must have an initialized
+database to do this. This is also the default command. Without any
+command \fBaide\fP does a check.
+.IP "--init, -i"
+Initialize the database. You must initialize a database and move it to
+the appropriate place before you can use the \-\-check command.
+.IP "--update, -u"
+Checks the database and updates the database non-interactively.
+The input and output databases must be different.
+.IP "--compare, -E"
+Compares two databases. They must be defined in config file with
+database=<url> and database_new=<url>.
+.IP "--config-check, -D"
+Stops after reading in the configuration file. Any errors will be reported.
+If \fBaide\fP was compiled with the \(dq\fB--with-dbhmackey\fR\(dq option,
+a hash for the config file will be calculated. See the AIDE manual for more
+information.
+.SH PARAMETERS
+.IP "--config=\fBconfigfile\fR , -c \fBconfigfile\fR"
+Configuration is read from file \fBconfigfile\fR instead of "./aide.conf". Use '-' for stdin.
+.IP "--limit=\fBREGEX\fR , -l \fBREGEX\fR"
+Limit command to entries matching REGEX. Note that the REGEX only matches
+at the first position.
+
+.RS
+.B Example
+.RS 3
+Only check and update the database entries matching /etc (i.e. the /etc
+directory) while leaving all other entries unchecked and unchanged:
+
+.RS 3
+.nf
+aide --update --limit /etc
+.fi
+.RE
+.RE
+.RE
+
+.IP "--before=\(dq\fBconfigparameters\fR\(dq , -B \(dq\fBconfigparameters\fR\(dq"
+These \fBconfigparameters\fR are handled before the reading of the
+configuration file. See aide.conf (5) for more details on what to put
+here.
+.IP "--after=\(dq\fBconfigparameters\fR\(dq , -A \(dq\fBconfigparameters\fR\(dq"
+These \fBconfigparameters\fR are handled after the reading of the
+configuration file. See aide.conf (5) for more details on what to put
+here.
+.IP --verbose=\fBverbosity_level\fR,-V\fBverbosity_level\fR
+Controls how verbose \fBaide\fP is. Value must [0-255]. The default is
+5. With no argument Value is set to 20. This parameter overrides the
+value set in a configuration file.
+.IP "--report=\fBreporter\fR,-r \fBreporter\fR"
+\fBreporter\fR is a URL which tells \fBaide\fP where to send it's
+output. See aide.conf (5) section URLS for available values.
+.IP "--version,-v"
+\fBaide\fP prints out its version number
+.IP "--help,-h"
+Prints out the standard help message.
+.PP
+.SH DIAGNOSTICS
+Normally, the exit status is 0 if no errors occurred. Except when the
+.BR --check ,
+.BR --compare " or"
+.B --update
+command was requested, in which case the exit status is defined as:
+.IP "1 * (new files detected?)     +"
+.IP "2 * (removed files detected?) +"
+.IP "4 * (changed files detected?)"
+.PP
+Additionally, the following exit codes are defined for generic error
+conditions:
+.IP "14 Error writing error"
+.IP "15 Invalid argument error"
+.IP "16 Unimplemented function error"
+.IP "17 Invalid configureline error"
+.IP "18 IO error"
+.IP "19 Version mismatch error"
+.PP
+.SH NOTES
+Please note that due to mmap issues, aide cannot be terminated with
+SIGTERM. Use SIGKILL to terminate.
+
+The checksums in the database and in the output are by default base64
+encoded (see also report_base16 option).
+To decode them you can use the following shell command:
+
+echo <encoded_checksum> | base64 \-d | hexdump \-v \-e '32/1 "%02x" "\\n"'
+
+.PP
+.SH FILES
+.IP \fB@sysconfdir@/aide.conf\fR
+Default aide configuration file.
+.IP \fB@sysconfdir@/aide.db\fR
+Default aide database.
+.IP \fB@sysconfdir@/aide.db.new\fR
+Default aide output database.
+.SH SEE ALSO
+.BR aide.conf (5)
+.BR manual.html
+.SH BUGS
+There are probably bugs in this release. Please report them
+at http://sourceforge.net/projects/aide . Bug fixes are more than welcome.
+Unified diffs are preferred.
+.SH DISCLAIMER
+All trademarks are the property of their respective owners.
+No animals were harmed while making this webpage or this piece of
+software. Although some pizza delivery guy's feelings were hurt.
+.BR

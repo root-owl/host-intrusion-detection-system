@@ -1,0 +1,1088 @@
+2016-07-25 Hannes von Haugwitz <hannes@vonhaugwitz.com>
+	* Release version 0.16
+
+2016-07-11 Hannes von Haugwitz <hannes@vonhaugwitz.com>
+	* Fix example aide.conf (xattr -> xattrs)
+	* aide.conf.5: update "SELECTION LINES" section
+	* Released version 0.16rc1
+
+2016-07-10 Hannes von Haugwitz <hannes@vonhaugwitz.com>
+	* Fix compilation with latest libaudit
+	* Use AC_PROG_CC_C99 instead of AC_PROG_CC
+	* Add AM_PROG_CC_C_O
+	* aide.conf.in: logfile -> file
+	* Update README
+	* Update manual pages (aide.1 and aide.conf.5)
+
+2016-07-07 Hannes von Haugwitz <hannes@vonhaugwitz.com>
+	* Adapt manual to version 0.16
+
+2016-06-08 Hannes von Haugwitz <hannes@vonhaugwitz.com>
+	* Add missing break statements
+
+2016-04-15 Hannes von Haugwitz <hannes@vonhaugwitz.com>
+	* Released version 0.16b1
+
+2016-04-13 Hannes von Haugwitz <hannes@vonhaugwitz.com>
+	* Fix spelling errors
+	* Makefile.am: fix distribution of doc files
+
+2016-04-11 Hannes von Haugwitz <hannes@vonhaugwitz.com>
+	* Add 'report_ignore_changed_attrs' option, deprecate 'ignore_list' option
+	* Add 'report_force_attrs' option, deprecate 'report_attributes'
+	  option
+
+2016-04-08 Hannes von Haugwitz <hannes@vonhaugwitz.com>
+	* Fix some compiler warnings
+
+2016-04-06 Hannes von Haugwitz <hannes@vonhaugwitz.com>
+	* Support restricted selection lines
+
+2016-04-02 Hannes von Haugwitz <hannes@vonhaugwitz.com>
+	* Adjust file type letters
+
+2016-03-31 Hannes von Haugwitz <hannes@vonhaugwitz.com>
+	* Change verbosity levels to ease debugging
+
+2016-03-28 Hannes von Haugwitz <hannes@vonhaugwitz.com>
+	* Fix '.*'-rule matching and code cleanup
+
+2016-03-22 Hannes von Haugwitz <hannes@vonhaugwitz.com>
+	* Fix compilation issue with e2fsprogs 1.43
+
+2016-03-06 Hannes von Haugwitz <hannes@vonhaugwitz.com>
+	* Fix report layout
+
+2016-03-05 Hannes von Haugwitz <hannes@vonhaugwitz.com>
+	* Fix segfault when DB_CHECKINODE is used
+
+2016-03-02 Hannes von Haugwitz <hannes@vonhaugwitz.com>
+	* Add new '--limit' parameter
+
+2016-03-01 Hannes von Haugwitz <hannes@vonhaugwitz.com>
+	* Sort entries of database file
+
+2016-02-27 Hannes von Haugwitz <hannes@vonhaugwitz.com>
+	* Switch to Perl 5 Compatible Regular Expressions, changes include:
+	  - require PCRE library
+	  - drop bundled GNU regexp library
+	* src/commandconf.c: add warning if a group is redefined
+
+2016-02-21 Hannes von Haugwitz <hannes@vonhaugwitz.com>
+	* Add new 'database_add_metadata' option
+
+2016-02-20 Hannes von Haugwitz <hannes@vonhaugwitz.com>
+	* Add new 'report_quiet' option
+
+2015-11-22 Hannes von Haugwitz <hannes@vonhaugwitz.com>
+	* Use single Makefile.am
+	* doc/aide.conf.5.in: minor fixes
+
+2015-11-20 Hannes von Haugwitz <hannes@vonhaugwitz.com>
+	* src/gen_list.c: minor code cleanup
+
+2015-11-16 Hannes von Haugwitz <hannes@vonhaugwitz.com>
+	* Rewrote handling of ignored/forced attributes, changes include:
+	  - new 'report_ignore_added_attrs' option
+	  - new 'report_ignore_removed_attrs' option
+	  - print human-readable info about ignored attributes in report
+	  - code cleanup
+	  - bug fixes
+
+2015-11-07 Hannes von Haugwitz <hannes@vonhaugwitz.com>
+	* Added new 'report_ignore_e2fsattrs' option
+
+2015-10-31 Hannes von Haugwitz <hannes@vonhaugwitz.com>
+	* src/gen_list.c: fixed bug if rules are removed
+
+2015-10-28 Hannes von Haugwitz <hannes@vonhaugwitz.com>
+	* src/compare_db.c: fixed total number of entries
+
+2015-08-08 Hannes von Haugwitz <hannes@vonhaugwitz.com>
+	* src/compare_db.c: added support for new e2fsattrs flags
+
+2015-05-06 Hannes von Haugwitz <hannes@vonhaugwitz.com>
+	* src/compare_db.c: adjusted report layout
+
+2015-03-02 Hannes von Haugwitz <hannes@vonhaugwitz.com>
+	* Renamed 'configure.in' to 'configure.ac'
+
+2013-05-20 Hannes von Haugwitz <hannes@vonhaugwitz.com>
+	* Print checksums of databases in verbose level 2 or higher (closes
+	  feature request 1502032)
+	* Added new 'database_attrs' option
+	* configure.in: fixed compilation with selinux
+	* src/conf_lex.l, src/db_lex.l: fixed definition of YYDEBUG
+
+2013-05-18	Hannes von Haugwitz <hannes@vonhaugwitz.com>
+	* configure.in: removed check for 'libcrypt'
+	* Renamed 'detailed_init_report' option to 'report_detailed_init'
+
+2013-05-17	Hannes von Haugwitz <hannes@vonhaugwitz.com>
+	* configure.in:
+	  - fixed "suspicious cache-id" warnings
+	  - removed 'AC_CONFIG_MACRO_DIR' macro
+	* src/Makefile.am:
+	  - replaced INCLUDES with AM_CPPFLAGS
+
+2013-05-16	Hannes von Haugwitz <hannes@vonhaugwitz.com>
+	* Handle tilde (~) in database paths and report urls
+	* src/compare_db.c: adjusted report layout
+
+2013-05-14	Hannes von Haugwitz <hannes@vonhaugwitz.com>
+	* src/db.c: fixed segfault when dbconf->db_out is NULL
+	* Replaced fopen.c with the version from curl-7.30.0
+
+2013-05-08	Hannes von Haugwitz <hannes@vonhaugwitz.com>
+	* src/compare_db.c:
+	  - fixed output of checksums
+	  - use size_t as the type of for loop variable
+
+2013-05-06	Hannes von Haugwitz <hannes@vonhaugwitz.com>
+	* src/compare_db.c:
+	  - fixed return value of database initialization
+	  - minor code cleanup
+	* src/db_file.c, src/do_md.c:
+	  - fixed use of unportable %m format
+	* doc/aide.1.in:
+	  - fixed format in NOTES section
+	  - documented return value of '--compare' and '--update' command
+
+2013-05-04	Hannes von Haugwitz <hannes@vonhaugwitz.com>
+	* src/compare_db.c:
+	  - changed minimum verbose level for printing the details
+	    about added and removed entries to 7
+	* README:
+	  - updated "Source Code Verification" section
+	* Released version 0.16a2
+
+2012-10-10	Hannes von Haugwitz <hannes@vonhaugwitz.com>
+	* Added new default group X
+	* src/gen_list.c: fixed stripping of removed attributes
+
+2012-10-08	Hannes von Haugwitz <hannes@vonhaugwitz.com>
+	* src/gen_list.c: fixed handling of renamed files
+	  - read in databases in one go
+	  - read in old database at the end
+
+2012-10-06	Hannes von Haugwitz <hannes@vonhaugwitz.com>
+	* Added new report_base16 option
+
+2012-09-05	Hannes von Haugwitz <hannes@vonhaugwitz.com>
+	* src/compare_db.c: support older versions of e2fsprogs
+
+2012-06-19	Hannes von Haugwitz <hannes@vonhaugwitz.com>
+	* src/db_file.c: added missing format string to dofprintf calls
+
+2011-10-02	Hannes von Haugwitz <hannes@vonhaugwitz.com>
+	* Added new detailed_init_report option
+
+2011-09-29	Hannes von Haugwitz <hannes@vonhaugwitz.com>
+	* configure.in, include/aide.h, src/db_file.c:
+	 - fixed 'undef' compiler warnings
+
+2011-09-24	Hannes von Haugwitz <hannes@vonhaugwitz.com>
+	* src/gen_list.c, include/do_md.h, src/do_md.c:
+	  - moved selinux2line function to src/do_md.c
+	  - moved xattrs2line function to src/do_md.c
+	* src/db_file.c:
+	  - declare db_writeacl only if WITH_ACL is defined
+
+2011-09-23	Hannes von Haugwitz <hannes@vonhaugwitz.com>
+	* include/db_disk.h, src/db_disk.c, src/db.c:
+	  - fixed 'unused-parameter' compiler warning
+	* include/db_disk.h, src/db_disk.c:
+	  - removed unused functions (db_disk_read_spec, db_writespec_disk,
+	    db_writeline_disk, db_close_disk)
+	* src/db_file.c:
+	  - fixed 'unused-but-set-variable' compiler warnings
+	* src/gen_list.c, include/do_md.h, src/do_md.c:
+	  - call acl2line only if WITH_ACL is defined
+
+2011-09-22	Hannes von Haugwitz <hannes@vonhaugwitz.com>
+	* src/be.c:
+	  - declared static functions static
+	* src/commandconf.c:
+	  - fixed 'unused-but-set-variable' compiler warning
+	* src/compare_db.c:
+	  - fixed some 'format' compiler warnings
+	* src/db.c:
+	  - fixed 'unused-but-set-variable' compiler warnings
+
+2011-09-21	Hannes von Haugwitz <hannes@vonhaugwitz.com>
+	* include/aide.h, src/aide.c:
+	  - declared static functions static
+
+2011-09-20	Hannes von Haugwitz <hannes@vonhaugwitz.com>
+	* include/aide.h, src/db_file.c:
+	  - fixed format of 8 bytes off_t type
+
+2011-09-17	Hannes von Haugwitz <hannes@vonhaugwitz.com>
+	* src/aide.c:
+	  - added missing #include <dirent.h>
+
+2011-09-09	Rami Lehti <rami.lehti@bitwise.fi>
+	* src/base64.c, src/gen_list.c:
+	  - changed verbosity levels to ease debugging
+
+2011-09-07	Hannes von Haugwitz <hannes@vonhaugwitz.com>
+	* src/commandconf.c:
+	  - added missing spaces to "Cannot access config file" message
+
+2011-09-05	Hannes von Haugwitz <hannes@vonhaugwitz.com>
+	* Added new root_prefix option
+	* src/do_md.c:
+	  - removed unused function (md_init_fail)
+
+2011-09-04	Hannes von Haugwitz <hannes@vonhaugwitz.com>
+	* include/gen_list.h, src/gen_list.c:
+	  - removed unused functions (add_file_to_list, traverse_tree, gen_list)
+
+2011-09-03	Hannes von Haugwitz <hannes@vonhaugwitz.com>
+	* src/gen_list.c:
+	  - print list of added files (verbose level >= 2) and their details
+	    (verbose level >= 6) if database has been initialized
+
+2011-07-12	Hannes von Haugwitz <hannes@vonhaugwitz.com>
+	* src/gen_list.c:
+	  - fixed has_str_changed function
+	* src/util.c:
+	  - fixed bad free of hostname variable
+	* src/db_file.c:
+	  - removed dead code
+
+2011-04-08	Hannes von Haugwitz <hannes@vonhaugwitz.com>
+	* src/gen_list.c:
+	  - fixed wrong total number of entries if comparing two databases
+
+2011-03-29	Hannes von Haugwitz <hannes@vonhaugwitz.com>
+	* src/compare_db.c:
+	  - rewrote gen_report function, changes included:
+		- merged gen_report() and report_tree()
+		- added info about verbose level, ignorelist and report_attributes to
+		  report if they differ from standard value
+		- changed report if aide found no changes
+		- added info about number of entries if aide found no changes or
+		  the database has been initialized
+		- fixed report of added or removed entries if verbose level is 6 or
+		  higher and there are only added or removed entries
+
+2011-03-24	Hannes von Haugwitz <hannes@vonhaugwitz.com>
+	* src/compare_db.c:
+	  - made ignored_attrs and forced_attrs global
+	  - added run time to report
+
+2011-03-22	Hannes von Haugwitz <hannes@vonhaugwitz.com>
+	* src/compare_db.c:
+	  - print "End timestamp" message in report
+
+2011-03-18	Hannes von Haugwitz <hannes@vonhaugwitz.com>
+	* src/db_disk.c:
+	  - fixed handling of "/" directory inode
+	  - got rid of some static variables
+
+2011-03-01	Hannes von Haugwitz <hannes@vonhaugwitz.com>
+	* Removed contrib/mkgitsnapshot.sh
+
+2011-02-16	Hannes von Haugwitz <hannes@vonhaugwitz.com>
+	* Released version 0.16a1
+
+2011-02-09	Hannes von Haugwitz <hannes@vonhaugwitz.com>
+	* README:
+	  - adjusted "Source Code Verification" section
+
+2010-12-30	Hannes von Haugwitz <hannes@vonhaugwitz.com>
+	* src/compare_db.c:
+	  - print "Looks okay" message also in DO_DIFF mode
+
+2010-12-29	Hannes von Haugwitz <hannes@vonhaugwitz.com>
+	* include/compare_db.h, src/compare_db.c:
+	  - added gen_report function (code copied from src/aide.c)
+	* src/aide.c:
+	  - removed code copied to src/compare_db.c
+	* include/compare_db.h:
+	  - removed report_tree function
+
+2010-12-28	Hannes von Haugwitz <hannes@vonhaugwitz.com>
+	* src/compare_db.c:
+	  - use strftime to format timestamps
+	  - made width_details, time_format[] and time_string_len constant
+	  - added numeric timezone to the date format
+
+2010-12-27	Hannes von Haugwitz <hannes@vonhaugwitz.com>
+	* src/compare_db.c:
+	  - added xattrs2array, acl2array and get_attribute_values functions
+	  - added print_dbline_attributes function, changes included:
+		- wrap attribute values instead of cut them off
+		- side-by-side output of acl and xattrs values
+		- use '|' to separate the old value from the new one
+		- use node->changed_attributes instead of recalculate the
+		  changed attributes
+		- print added or removed attributes of changed entries if forced
+		  via report_attributes
+	  - removed obsolete code
+	  - print details about added and removed entries in verbose level 6
+	    or higher, closes feature request 1460461
+	  - print added and removed attribute values of changed entries in
+	    verbose level 6 or higher
+
+2010-12-26	Hannes von Haugwitz <hannes@vonhaugwitz.com>
+	* src/compare_db.c:
+	  - fixed type of summary_char[]
+	  - fixed typo in comment
+
+2010-11-27	Hannes von Haugwitz <hannes@vonhaugwitz.com>
+	* doc/aide.1.in:
+	  - fixed format in FILES section
+	  - added hint on how to decode base64 encoded checksums
+
+2010-11-26	Hannes von Haugwitz <hannes@vonhaugwitz.com>
+	* doc/manual.html:
+	  - applied changes by Jack Blankenship <Jack.Blankenship@bcbssc.com>
+
+2010-11-16	Hannes von Haugwitz <hannes@vonhaugwitz.com>
+	* src/compare_db.c:
+	  - added missing declaration of aclt variable
+
+2010-11-14	Hannes von Haugwitz <hannes@vonhaugwitz.com>
+	* src/conf_yacc.y:
+	  - fixed declaration of conftext variable
+	* configure.in:
+	  - fixed compilation under Solaris
+	* README:
+	  - added hint to use --disable-static under Solaris 10/OpenSolaris
+
+2010-10-12	Hannes von Haugwitz <hannes@vonhaugwitz.com>
+	* src/gen_list.c, src/do_md.c:
+	  - replaced "File" by "Entry"
+
+2010-10-11	Hannes von Haugwitz <hannes@vonhaugwitz.com>
+	* src/aide.c, doc/aide.conf.5.in:
+	  - enabled summarize_changes by default
+
+2010-09-29	Hannes von Haugwitz <hannes@vonhaugwitz.com>
+	* src/compare_db.c:
+	  - rewrote summarize_changes feature to work with node->changed_attrs
+	  - replaced "files" by "entries"
+	  - made e2fsattrs2string static
+	  - use S_IFMT to extract the file type code
+
+2010-09-27	Hannes von Haugwitz <hannes@vonhaugwitz.com>
+	* src/gen_list.c:
+	  - added bytecmp, has_str_changed, has_md_changed, compare_single_acl,
+	    has_acl_changed, cmp_xattr_node, have_xattrs_changed (copied and
+	    renamed from src/compare_db.c)
+	  - added get_changed_attributes function
+	  - use get_changed_attributes instead of compare_dbline
+	  - save changed attributes in node->changed_attrs
+	* include/compare_db.h, src/compare_db.c:
+	  - removed obsolete compare_dbline function
+
+2010-09-24	Hannes von Haugwitz <hannes@vonhaugwitz.com>
+	* include/compare_db.h: removed init_rxlst function
+	* include/db_config.h: include seltree.h after #define DB_ATTR_TYPE
+	* include/seltree.h:
+	  - use DB_ATTR_TYPE instead of int for attr
+	  - added DB_ATTR_TYPE changed_attrs to seltree struct
+
+2010-09-23	Hannes von Haugwitz <hannes@vonhaugwitz.com>
+	* src/compare_db.c:
+	  - removed unused functions (find_line_match, init_rxlst, eat_files_indir)
+	  - compare ignorelist/forced_attrs with DB_ATTR_UNDEF instead of -1
+	  - renamed e2fsattrs2char function to e2fsattrs2string
+	  - use str_has_changed instead of compare_str
+	  - added debug output to md_has_changed
+	  - use md_has_changed instead of compare_md_entries
+	  - removed obsolete functions (compare_str, compare_md_entries)
+
+2010-09-17	Hannes von Haugwitz <hannes@vonhaugwitz.com>
+	* src/compare_db.c: fixed compiler warning if WITH_AUDIT is not defined
+
+2010-09-11	Hannes von Haugwitz <hannes@vonhaugwitz.com>
+	* Documented '-E' in man page and '--help' text
+
+2010-09-10	Richard van den Berg  <richard@vdberg.org>
+	* Released version 0.15.1
+	* Changed version to post-0.15.1
+
+2010-09-07	Hannes von Haugwitz <hannes@vonhaugwitz.com>
+	* Ignore changed file name if attributes does not match
+	* Allow absence of DB_CHECKINODE if file name has changed
+
+2010-08-08	Richard van den Berg  <richard@vdberg.org>
+	* Added mkgitsnapshot.sh to contrib/
+	* Released version 0.15
+	* Changed version to post-0.15
+
+2010-08-06	Hannes von Haugwitz <hannes@vonhaugwitz.com>
+	* Updated copyright notices of list.h, list.c, md.h, md,c, symboltable.h,
+	  symboltable.c, util.h and util.c
+	* Escaped '-' that really mean '-' in man pages
+	* Updated copyright notices of db_config.h, report.h, url.h, conf_yacc.y,
+	  db_lex.l and error.c
+
+2010-08-05	Hannes von Haugwitz <hannes@vonhaugwitz.com>
+	* Updated copyright notices of db_file.h, db_file.c, db_sql.h, db_sql.c,
+	  do_md.h, do_md.c, gen_list.h and gen_list.c
+
+2010-08-04	Hannes von Haugwitz <hannes@vonhaugwitz.com>
+	* Updated copyright notices of commandconf.h, commandconf.c, conf_lex.h,
+	  conf_lex.l, db.h, db.c and db_list.h
+
+2010-08-03	Hannes von Haugwitz <hannes@vonhaugwitz.com>
+	* Updated copyright notices of aide.h, aide.c, be.c, compare_db.h,
+	  compare_db.c and db_disk.c
+
+2010-08-02	Richard van den Berg  <richard@vdberg.org>
+	* Removed ], from version string when --with-curl was used, closes bug 3038382
+
+2010-08-01	Richard van den Berg  <richard@vdberg.org>
+	* Released version 0.15-rc1
+	* Changed version to post-0.15-rc1
+
+2010-07-30	Hannes von Haugwitz <hannes@vonhaugwitz.com>
+	* Removed obsolete compare_db function
+	* Updated documentation of the default groups
+
+2010-07-29	Hannes von Haugwitz <hannes@vonhaugwitz.com>
+	* Added ftype and e2fsattrs to the default groups L, R and >
+
+2010-07-25	Hannes von Haugwitz <hannes@vonhaugwitz.com>
+	* Fixed sorting of files in report by filename
+
+2010-07-24	Hannes von Haugwitz <hannes@vonhaugwitz.com>
+	* Added new grouped option
+	* Sort files in report by filename, see feature request 1337718
+
+2010-07-23	Hannes von Haugwitz <hannes@vonhaugwitz.com>
+	* Fixed indent of XAttrs output
+	* Fixed report_attributes for XAttrs
+	* Fixed indent of ACL output
+	* Fixed report_attributes for ACL
+	* Fixed report_attributes for Lname and SELinux
+
+2010-07-22	Hannes von Haugwitz <hannes@vonhaugwitz.com>
+	* Fixed report_attributes for checksum values
+	* Replaced 'E2fsAttrs' by 'E2FSAttrs'
+	* Fixed report_attributes for string and long values
+	* summarize_changes: made summary string length also for
+	  added/removed files dynamic
+
+2010-07-21	Hannes von Haugwitz <hannes@vonhaugwitz.com>
+	* Fixed typo in aide.conf man page
+	* summarize_changes: made length of summary string dynamic
+	* Always save the inode to database (needed for DB_CHECKINODE)
+	* Documented ftype and e2fsattrs in aide.conf
+	* Added TFTYPE token
+	* Prompt for ./configure and make only if autoreconf was successful
+
+2010-07-20	Hannes von Haugwitz <hannes@vonhaugwitz.com>
+	* Added ext2 file attributes support
+
+2010-06-12	Hannes von Haugwitz <hannes@vonhaugwitz.com>
+	* Always add permissions attribute to database
+	* Added AIDEVERSION to report
+
+2010-06-11	Hannes von Haugwitz <hannes@vonhaugwitz.com>
+	* Adjusted old database warning message
+
+2010-06-10	Hannes von Haugwitz <hannes@vonhaugwitz.com>
+	* Added file type change detection support
+	* Use DB_ATTR_TYPE for ignorelist and forced_attrs
+
+2010-06-09	Hannes von Haugwitz <hannes@vonhaugwitz.com>
+	* Fixed handling of size and growing size bits
+
+2010-06-08	Hannes von Haugwitz <hannes@vonhaugwitz.com>
+	* Another fix for the changed permissions are always reported issue
+
+2010-06-07	Hannes von Haugwitz <hannes@vonhaugwitz.com>
+	* Replaced 'Permissions' by 'Perm' to fit 9 columns
+	* Fit detailed output in 80 columns, closes feature request 1337759
+
+2010-06-05	Richard van den Berg  <richard@vdberg.org>
+	* Released version 0.14.2
+	* Changed version to post-0.14.2
+
+2010-06-05	Hannes von Haugwitz <hannes@vonhaugwitz.com>
+	* Added missing description for '|' in aide.conf man page
+	* Report correct file type in "Detailed information about changes" section
+	* Fixed strcpy issue on multi-core environments
+
+2010-06-04	Hannes von Haugwitz <hannes@vonhaugwitz.com>
+	* Replaced 'File' by 'Entry' in database warnings
+	* Reformatted "Entry ... has different attributes" warnings
+
+2010-06-03	Hannes von Haugwitz <hannes@vonhaugwitz.com>
+	* Added missing space and new line to "Error in selective regexp" message,
+	  fixes bug 1944700
+	* Added missing '-' to separator line in the report
+
+2010-05-30	Richard van den Berg  <richard@vdberg.org>
+	* Released version 0.14.1
+	* Changed version to post-0.14.1
+
+2010-05-20	Richard van den Berg  <richard@vdberg.org>
+	* Support spaces and other characters in file paths in config by Byron Darrah  <bdarrah@corp.netzero.net>
+	* Added aide-attributes.sh script by Hannes von Haugwitz <hannes@vonhaugwitz.com>
+
+2010-05-19	Richard van den Berg  <richard@vdberg.org>
+	* Use exit() instead of abort() by Steve Grubb <sgrubb@redhat.com>
+	* Fixed changed permissions are always reported issue by Hannes von Haugwitz <hannes@vonhaugwitz.com>
+
+2010-04-09	Richard van den Berg  <richard@vdberg.org>
+	* Use DB_ATTR_TYPE for compare_dbline() by Patrick Neely <patrick.neely@gtri.gatech.edu>
+
+2010-03-27	Richard van den Berg  <richard@vdberg.org>
+	* Changed version to post-0.14
+	* Do not use += in configure, fixes bug 2972100
+	* Change gzdopen() from wb+ to wb, fixes bug 2976146
+	* Do not strcat into uninitialized data, fixes bug 2919946
+	* Add missing db_sql prototypes, and Sun Studio compatibility, fixes bug 2888035
+	* Initialize gcrypt properly, fixes bug 2763470
+
+2010-03-16	Richard van den Berg  <richard@vdberg.org>
+	* Released version 0.14
+
+2010-02-26	Richard van den Berg  <richard@vdberg.org>
+	* Changed version to post-0.14-rc3
+	* Fixed some AC_ARG_WITH magic
+	* Define ENOATTR if needed by Hannes von Haugwitz <hannes@vonhaugwitz.com>
+
+2010-02-25	Richard van den Berg  <richard@vdberg.org>
+	* Released version 0.14-rc2
+	* Fix xattrs and selinux bits by Hannes von Haugwitz <hannes@vonhaugwitz.com>
+	* Released version 0.14-rc3
+
+2010-02-25	Steve Grubb <sgrubb@redhat.com>
+	* Additional checks for snprintf.c
+	* Fix off64_t and other size warnings
+	* Correct linker settings
+
+2010-02-24	Richard van den Berg  <richard@vdberg.org>
+	* Re-enable large file support on 32 bit systems by Steve Grubb <sgrubb@redhat.com>
+
+2010-02-23	Richard van den Berg  <richard@vdberg.org>
+	* Show -D in --help by Steve Grubb <sgrubb@redhat.com>
+	* Refix line->attr&DB_LINKNAME is always true issue by Hannes von Haugwitz <hannes@vonhaugwitz.com>
+
+2010-02-22	Richard van den Berg  <richard@vdberg.org>
+	* Released version 0.14-rc1
+	* Changed version to post-0.14-rc1
+
+2010-02-21	Richard van den Berg  <richard@vdberg.org>
+	* Replaced snprintf.c with the version from rsync-2.6.9
+
+2010-02-21	Hannes von Haugwitz <hannes@vonhaugwitz.com>
+	* Fix checksums letter
+	* Always save the permission to database
+	* summarize_changes: Re-enabled file-type detection for removed files
+	* Fix line->attr&DB_LINKNAME is always true issue
+	* Remove localignorelist for changed nodes
+	* Disable DB_ACL bit if acls are not supported
+
+2010-02-18	Richard van den Berg  <richard@vdberg.org>
+	* Adjust building of fopen.c by Steve Grubb <sgrubb@redhat.com>
+	* Fix error handling for prelink by Steve Grubb <sgrubb@redhat.com>
+
+2010-02-17	Richard van den Berg  <richard@vdberg.org>
+	* Fix several warnings by Steve Grubb <sgrubb@redhat.com>
+	* Check LD in configure by Steve Grubb <sgrubb@redhat.com>
+	* Fix xattrs typos by Hannes von Haugwitz <hannes@vonhaugwitz.com>
+	* Reworked summarize_changes option by Hannes von Haugwitz <hannes@vonhaugwitz.com>
+
+2010-02-13	Richard van den Berg  <richard@vdberg.org>
+	* Added autoconf patch from Steve Grubb <sgrubb@redhat.com>
+	* Removed AM_PROG_LIBTOOL from configure.in
+
+2010-02-06	Hannes von Haugwitz <hannes@vonhaugwitz.com>
+	* Fixed wrong char array size
+
+2010-02-01	Hannes von Haugwitz <hannes@vonhaugwitz.com>
+	* Added new option to summarize changes in output file
+
+2009-05-15	Richard van den Berg  <richard@vdberg.org>
+	* Prelink patch by Peter Vrabec <pvrabec@redhat.com>
+
+2007-12-20	Richard van den Berg  <richard@vdberg.org>
+	* Fix equals matches, patch by Brian De Wolf <bldewolf@csupomona.edu>
+
+2007-08-22	Richard van den Berg  <richard@vdberg.org>
+	* Turn CR/LF into LF, patch by Steve Conklin <sconklin@redhat.com>
+
+2007-06-05	Richard van den Berg  <richard@vdberg.org>
+	* Display complete selinux context, patch by Steve Conklin <sconklin@redhat.com>
+
+2007-05-15	Richard van den Berg  <richard@vdberg.org>
+	* Quit autogen.sh if required tools are not found
+
+2007-04-27	Richard van den Berg  <richard@vdberg.org>
+	* Only use optional groups in "make check" when enabled
+	* Prevent segfaults in db_write_byte_base64, patch from James Antill
+	* Fix aide.spec, patch by George Hansper <georgeh@anstat.com.au>
+
+2006-12-19	Richard van den Berg  <richard@vdberg.org>
+	* Do not warn about files not being directories
+
+2006-12-15	Richard van den Berg  <richard@vdberg.org>
+	* Released version 0.13.1
+	* Changed version to post-0.13.1
+
+2006-12-14	Richard van den Berg  <richard@vdberg.org>
+	* Use lseek() instead of fseek() on aide.db
+
+2006-12-13	Richard van den Berg  <richard@vdberg.org>
+	* Work around for error while reading gzipped aide.db files
+
+2006-12-08	Richard van den Berg  <richard@vdberg.org>
+	* Removed ustat dead code
+
+2006-12-07	Richard van den Berg  <richard@vdberg.org>
+	* Released version 0.13
+	* Changed version to post-0.13
+
+2006-11-30	Richard van den Berg  <richard@vdberg.org>
+	* Set meaningful exitcodes when --check is used (Pablo Virolainen)
+
+2006-11-29	Richard van den Berg  <richard@vdberg.org>
+	* Changed version to post-0.13-rc2
+	* Check for WHIRLPOOL so old mhash can be used (Pablo Virolainen)
+
+2006-11-25	Richard van den Berg  <richard@vdberg.org>
+	* Fix error message about HAVAL and CRC32 with --update and gcrypt
+	* Fix --with and --without logic of configure
+	* Make --without switches of configure work
+	* Released version 0.13-rc2
+
+2006-11-24	Richard van den Berg  <richard@vdberg.org>
+	* Remove stpcpy declaration because it is not defined in util.c
+	* Fix segfault when line->cntx is NULL
+	* Add --without-mhash to configure
+	* Don't use DB_SELINUX and DB_XATTR when not present
+	* Fix use of libgcrypt
+	* Add new group 'l' to detect changed link name
+	* Update documentation with new groups
+	* Supply strnlen in utils.c
+	* Released version 0.13-rc1
+
+2006-11-15	Richard van den Berg  <richard@vdberg.org>
+	* Fix syslog URLs (Yves Mettier <ymettier@libertysurf.fr>)
+
+2006-10-30	Richard van den Berg  <richard@vdberg.org>
+	* Make --with-selinux work without pkg-config
+
+2006-10-27	Richard van den Berg  <richard@vdberg.org>
+	* Added "Add xattr support" patch from James Antill <james-aide-38mkm@and.org>
+	* Added "report miscompares to Linux Audit System" patch from James Antill
+	* Added "Allow building without mhash library" patch from James Antill
+	* Added "correct db_names" patch from Steve Grubb <sgrubb@redhat.com>
+	* Added "memory leaks and performance updates" patch from Steve Grubb
+	* Added "deadcode removal" patch from Steve Grubb <sgrubb@redhat.com>
+	* Added "change K&R functions to void functions" patch from Steve Grubb
+	* Added "Memleak fix for ACLs, SELinux, XAttr" patch from James Antill
+
+2006-10-10	Richard van den Berg  <richard@vdberg.org>
+	* Added note about rpl_malloc on AIX 5.3 with mhash
+	* Include version.m4 in distribution tar file
+	* No need for absolute $(srcdir) in configure
+	* Use AC_CONFIG_FILES(files..) instead of AC_OUTPUT(files..)
+	* Removed redundant targets from Makefile.am
+
+2006-10-06	Richard van den Berg  <richard@vdberg.org>
+	* Changed version to post-0.12
+	* Added file locking for output files
+
+2006-10-05	Richard van den Berg  <richard@vdberg.org>
+	* Released version 0.12
+
+2006-10-04	Richard van den Berg  <richard@vdberg.org>
+	* Close database files earlier
+	* Released version 0.12-rc2
+
+2006-09-24	Richard van den Berg  <richard@vdberg.org>
+	* Fixed filesize stored in postgres (SF bug #1177758)
+
+2006-07-15	Richard van den Berg  <richard@vdberg.org>
+	* Released version 0.12-rc1
+	* Remove the use of NODE_ADD_CHILDREN, hopefully it is no longer needed
+	* Added syntax changed from 10-manpages.dpatch
+	* Added newlines as per SF bug #1461182
+	* Added report_attributes group (Pablo Virolainen)
+
+2006-06-13	Richard van den Berg  <richard@vdberg.org>
+	* Fix stat type in report_tree() (Heiko Lehmann <hlehmann@fh-lausitz.de>)
+
+2006-05-31	Richard van den Berg  <richard@vdberg.org>
+	* Added support for posix_fadvice() (Pablo Virolainen)
+
+2006-04-22	Richard van den Berg  <richard@vdberg.org>
+	* Fix seg faults on OpenBSD (Axel Rau <Axel.Rau@Chaos1.DE>)
+
+2006-04-22	Richard van den Berg  <richard@vdberg.org>
+	* Fix mmap on HPUX (fredrik@soderblom.org patch 1474555)
+
+2006-03-31	Richard van den Berg  <richard@vdberg.org>
+	* Abort if aide.db does not have checksum when FORCEDBMD is used
+	* Explain aide.conf and aide.db signing
+
+2006-03-29	Richard van den Berg  <richard@vdberg.org>
+	* Add spaces to error messages (Marc Haber)
+	* Don't warn about rules referring to non-existent directories by default
+
+2006-03-25	Richard van den Berg  <richard@vdberg.org>
+	* Allow aide.db to be supplied on stdin (Pablo Virolainen)
+	* Add patch to allow http/https/ftp URLs through libcurl (Pablo Virolainen)
+
+2006-03-17	Richard van den Berg  <richard@vdberg.org>
+	* Use system strnstr when available
+	* Add --disable-static flag to configure
+
+2006-03-13	Richard van den Berg  <richard@vdberg.org>
+	* Applied manual patch from Marc Haber
+	* Added note about problems with mhash 0.9.x
+
+2006-03-12	Richard van den Berg  <richard@vdberg.org>
+	* Mordernize use of AM_INIT_AUTOMAKE
+	* Use AIDEVERSION to avoid clash with VERSION of other packages
+
+2006-02-26	Richard van den Berg  <richard@vdberg.org>
+	* Use @sysconfdir@ as directory in aide.1, SF bug #1438995
+
+2006-02-23	Richard van den Berg  <richard@vdberg.org>
+	* Set AIDEVERSION right after including config.h
+	* Added note about SIGTERM (Marc Haber)
+
+2006-02-18	Richard van den Berg  <richard@vdberg.org>
+	* Released version 0.11
+	* Changed version to post-0.11
+
+2006-02-14	Richard van den Berg  <richard@vdberg.org>
+	* Fix the broken @@ifhost and @@ifnhost directives by lcn2 (SF bug #1430482)
+
+2006-02-09	Richard van den Berg  <richard@vdberg.org>
+	* Fall back to strtoimax if strtoll is not available
+	* Protect against non existing syslog facilities
+	* Updated aide.spec.in as suggested in SF bug #1428576
+
+2006-02-08	Richard van den Berg  <richard@vdberg.org>
+	* Explicitly check for readdir64, by Virolainen Pablo <pablo@cs.tut.fi>
+	* Added note about --disable-lfs in README
+
+2006-01-30	Richard van den Berg  <richard@vdberg.org>
+	* Released version 0.11-rc3
+	* Changed version to post-0.11-rc3
+
+2006-01-29	Richard van den Berg  <richard@vdberg.org>
+	* Fix layout of aide.conf.5 by Vincent Danen <vdanen@linsec.ca>
+	* Cleanup --help output by Vincent Danen <vdanen@linsec.ca>
+	* Add separators in --check output by Vincent Danen <vdanen@linsec.ca>
+	* Add --disable-lfs option to configure
+
+2006-01-22	Richard van den Berg  <richard@vdberg.org>
+	* Allow report_url to change syslog facility
+	* Only warn when DB_CHECKINODE and DB_CTIME are used together
+	* Added GPG scripts by Vincent Danen <vdanen@linsec.ca>
+
+2005-12-19	Richard van den Berg  <richard@vdberg.org>
+	* Revert check_list_for_match to old behaviour (Marc Haber)
+	* Documentation update (Marc Haber)
+
+2005-12-12	Richard van den Berg  <richard@vdberg.org>
+	* Log tree matching verbosely, patch by Virolainen Pablo <pablo@cs.tut.fi>
+
+2005-11-15	Richard van den Berg  <richard@vdberg.org>
+	* Applied 'allow removed files' patch by Virolainen Pablo <pablo@cs.tut.fi>
+
+2005-11-13	Richard van den Berg  <richard@vdberg.org>
+	* Applied fix to ANF by Virolainen Pablo <pablo@cs.tut.fi>
+
+2005-11-07	Richard van den Berg  <richard@vdberg.org>
+	* Applied 'allow new files' patch by Virolainen Pablo <pablo@cs.tut.fi>
+
+2005-11-03	Richard van den Berg  <richard@vdberg.org>
+	* Remove russian translations; they are out of date and there is no static version of gettext available
+	* Do not stop parsing directory at unescaped .
+	* Fix "make dist" and "make check"
+	* Added gpg scripts to contrib
+	* Released version 0.11-rc2
+	* Changed version to post-0.11-rc2
+
+2005-10-30	Richard van den Berg  <richard@vdberg.org>
+	* Warn if 'I' and 'c' are used together
+
+2005-10-28	Richard van den Berg  <richard@vdberg.org>
+	* Ignore 'c' when 'I' is in effect
+	* Mention in aide.conf.5 that 'c' and 'I' are incompatible
+
+2005-10-26	Richard van den Berg  <richard@vdberg.org>
+	* Check for ino64_t and dirent64 separately since HPUX does not have them
+
+2005-10-25	Richard van den Berg  <richard@vdberg.org>
+	* Print start and stop timestamp together (Marc Haber <mh+aide@zugschlus.de>)
+	* Print database_out path with -i and -u
+	* Added bzip2.sh to the contrib directory
+
+2005-10-19	Richard van den Berg  <richard@vdberg.org>
+	* Applied patch from Debian bug #121717: aide spelling fixes
+
+2005-10-16	Richard van den Berg  <richard@vdberg.org>
+	* Applied patch 1124758: fix underquoted m4
+	* Applied patch 1124757: dist-hook missing file snprintf.h
+	* Applied patch 1124760: cleaner automake initialisation
+	* Applied patch 1124782: gettextize related patch
+
+2005-10-07	Richard van den Berg  <richard@vdberg.org>
+	* If open() with NO_ATIME fails, try open() again without it
+
+2005-10-05	Richard van den Berg  <richard@vdberg.org>
+	* Compile aide as a static executable
+	* Fixed some spelling errors caught by Marc Haber <mh+aide@zugschlus.de>
+	* Changed version to Post 0.11-rc1
+	* Ignore special characters after backslash in directory names (bug #1162575)
+
+2005-10-04	Richard van den Berg  <richard@vdberg.org>
+	* Released aide 0.11-rc1
+
+2005-09-14	Richard van den Berg  <richard@vdberg.org>
+	* Print detailed error message when mmap() returns MAP_FAILED
+
+2005-09-02	Richard van den Berg  <richard@vdberg.org>
+	* Added patch for cygwin compatibility as per bug #1279818
+
+2005-08-10	Richard van den Berg  <richard@vdberg.org>
+	* Open files with O_NOATIME on Linux (per Vlada Macek <tuttle@bbs.cvut.cz>)
+
+2005-08-08	Richard van den Berg  <richard@vdberg.org>
+	* Reset fs.st_rdev in 2 additional places as per bug #1253822
+
+2005-06-30	Richard van den Berg  <richard@vdberg.org>
+	* Removed return in conf_lex.l that caused --after to be ignored
+
+2005-06-12	Richard van den Berg  <richard@vdberg.org>
+	* Applied another aide.1.in from Sven Hoexter <sven@timegate.de>
+
+2005-06-11	Richard van den Berg  <richard@vdberg.org>
+	* Applied aide.1.in patch from SF bug #1217483
+
+2005-04-28	Richard van den Berg  <richard@vdberg.org>
+	* Added long long support for portable snprintf
+	* Created aide.conf.5.in and aide.conf.5.ru.in as per bug #1103719
+
+2005-04-27	Richard van den Berg  <richard@vdberg.org>
+	* Fixed sshaide.sh as suggested in bug #1100740
+	* Removed db_writeacl() from db_disk.c as suggested in bug #1143889
+	* Set st_rdev to 0 when not used as suggested in bug #1169697
+
+2005-04-18	Richard van den Berg  <richard@vdberg.org>
+	* Correctly parse multiple backslashes in file names
+
+2005-04-08	Richard van den Berg  <richard@vdberg.org>
+	* Use configure to define type for storage of file size in aide.db
+	* Applied fix suggested in Debian Bug #237969
+
+2005-04-06	Richard van den Berg  <richard@vdberg.org>
+	* Always include aide.h before any other include file
+	* Include aide.h instead of config.h to avoid multiple inclusions
+	* Fixed large file under Solaris
+	* Make large file support generic (not just for Solaris)
+
+2005-04-05	Richard van den Berg  <richard@vdberg.org>
+	* Fixed bug where shrinking files with S set where not detected
+
+2005-02-20	Richard van den Berg  <richard@vdberg.org>
+	* Removed extra gen_tree() as suggested in patch 985632
+	* Allow escaping of spaces in filenames (Virolainen Pablo <pablo@cs.tut.fi>)
+	* Allow @@{HOSTNAME} usage in aide.conf (Virolainen Pablo <pablo@cs.tut.fi>)
+
+2004-11-16  Richard van den Berg  <richard@vdberg.org>
+	* Applied patch 984424: bug fix for "--check recurses when it shouldn't"
+	* Applied patch 853842: sshaide - contributed script
+
+2004-11-12  Richard van den Berg  <richard@vdberg.org>
+	* Fixed patch from Virolainen Pablo
+	* Applied patch id 931224: Ignoring moved files
+
+2004-11-05  Richard van den Berg  <richard@vdberg.org>
+	* Applied patch from Virolainen Pablo to give more infomation when file attributes have changed before calculating the hash
+
+2004-11-04  Richard van den Berg  <richard@vdberg.org>
+	* Make sure readdir_r is POSIX compliant before we use it
+
+2004-11-03  Richard van den Berg  <richard@vdberg.org>
+	* Applied patch 1058973: Please don't add -I$(prefix)/include
+	* Fixed bug 836253: Manual is wrong about --check command
+	* Applied fix in config parser to avoid 10000 line limit
+
+2004-11-02  Richard van den Berg  <richard@vdberg.org>
+	* Fixed various documentation bugs filed as sf.net
+
+2004-10-29  Richard van den Berg  <richard@vdberg.org>
+	* Use syslog() for systems that do not have vsyslog()
+	* Fixed file system traversing bug for systems without readdir_r
+	* Fixed bug 836257: Line numbers in verbose output off by one
+
+2004-10-28  Richard van den Berg  <richard@vdberg.org>
+	* Removed config.h.in
+	* Added ISO C99 compliant snprintf for systems that do not have it
+
+2004-10-26  Richard van den Berg  <richard@vdberg.org>
+	* Added check for ISO C99 compliant vsnprintf to configure.in
+
+2004-10-23  Richard van den Berg  <richard@vdberg.org>
+	* Applied PSQL patch from Marc Giger <gigerstyle@gmx.ch>
+	* Set version to "Post 0.10"
+	* Removed aide.1 and aide.1.ru since they are created by configure
+	* Moved #endif for WITH_MHASH in commandconf.c thanks to berkeley@octagon.com.au
+
+2003-12-08  Richard van den Berg  <richard@vdberg.org>
+	* Applied patch 853842 "sshaide - contributed script"
+	* Applied patch 855639 "Updated README file"
+
+2003-12-02  Richard van den Berg  <richard@vdberg.org>
+	* Fixed bug 851671 Aide-0.10 --config-check dumps core
+
+2003-11-28  Richard van den Berg  <richard@vdberg.org>
+	* Released aide version 0.10
+	* Applied patch 849857 "cosmetic report fix" thanks to John Kristoff
+
+2003-11-25  Mike Markley  <mike@markley.org>
+	* Applied patch from bug 848664 "crash in db_input_wrapper (gzip)" thanks to Matt Kettler
+
+2003-11-04  Richard van den Berg  <richard@vdberg.org>
+
+	* Fixed typo in compare_db.c, closes bug 836255 thanks to Michael Schwendt
+	* Applied patch 801860, fixes bug 801857 "=/$ gives segfault" thanks to Michael Schwendt
+	* Applied patch 803001 "Fix for some memory leaks" thanks to Michael Schwendt
+	* Applied patch 801853 "getopt optstring is wrong" thanks to Michael Schwendt
+
+2003-10-03  Richard van den Berg  <richard@vdberg.org>
+
+	* Moved project over to http://sf.net/projects/aide
+	* Fixed problems in conf_yacc.y
+	* Gzip code now uses best (-9) compression
+
+2002-07-22  Rami Lehti  <Rami.Lehti@Finland.Sun.COM>
+
+	* Fixed Unimplemented error message when conf md not compiled in
+	* Fixed error message about nonexistant files.
+	* Fixed --with-extra-includes --with-extra-libs handling (I hope)
+	* Fixed *stat handling
+
+2002-06-04  Rami Lehti  <Rami.Lehti@Finland.Sun.COM>
+
+	* Released 0.9
+
+2002-05-31  Rami Lehti  <Rami.Lehti@Finland.Sun.COM>
+
+	* Fixed a bug in memory handling causing corrupt md's
+	* Added --without-mmap configure option
+
+2002-05-29  Rami Lehti  <Rami.Lehti@Finland.Sun.COM>
+
+	* Updated version to 0.9
+	* Fixed loads of bugs
+	* This file should be updated more often
+	* Added support for md checked config and db
+	* Updated Copyright notices
+	* Changed checking algorithm (threading here we come)
+
+2002-02-10 Rami Lehti <Rami.Lehti@Finland.Sun.COM>
+	* Fixed loads and loads of bugs
+	* Added syslog backend
+	* Report format changed
+	* added lots of parameters see man page and configure --help
+	* added ACL support for SunOS 5.x (and compatibles)
+	* Released 0.8 (This is an unstable release)
+
+2000-04-27  Rami Lehti  <Rami.Lehti@Finland.Sun.COM>
+
+	* Added static link flag checking
+	* Released 0.7
+
+2000-04-13  Rami Lehti  <Rami.Lehti@Finland.Sun.COM>
+
+	* Added linkname checking
+	* Removed mhash snefru and fixed haval
+	* Mhash 0.8.1 required.
+
+2000-02-08  Rami Lehti  <Rami.Lehti@Finland.Sun.COM>
+	* Changed version to 0.7
+
+2000-02-08  Rami Lehti  <Rami.Lehti@Finland.Sun.COM>
+
+	* Fixed core dump bug in compare_db
+	* Added warning when config has changed
+	* Released 0.6
+
+2000-01-18  Virolainen Pablo  <pablo@kaspiankerttu.cs.tut.fi>
+
+	* Handles config filename '-' as stdin. Manpage update.
+
+1999-12-30  Rami Lehti  <rammer@cs.tut.fi>
+
+	* Fixed compilation problem with glibc 2.1
+
+1999-12-29  Rami Lehti  <Rami.Lehti@Finland.Sun.COM>
+
+	* Finally fixed wrong md5 sums.
+	* Fixed nonprintable filename encoding.
+	* Fixed a huge memory leak. 16k per databaseline.
+
+1999-12-08  Pablo Virolainen <pablo@cs.tut.fi>
+	* Check for [acm]times beeing in future is done correctly now.
+	* blockcount will now be writen to database...
+
+1999-12-02  Pablo Virolainen <pablo@cs.tut.fi>
+	* Added warning if file's [acm]time is in future (gen_list.c)
+
+1999-11-25  Rami Lehti  <Rami.Lehti@Finland.Sun.COM>
+
+	* Added support for unknown @@ tokens in databases
+
+1999-11-25  Pablo Virolainen <pablo@cs.tut.fi>
+	* Ignorelist for reports implemented.
+	* Block count added. It might be usefull with file with holes.
+
+1999-11-24  Pablo Virolainen <pablo@cs.tut.fi>
+	* Added '^' to first charaster of every regexpr
+	* Minor changes do_md.c
+
+1999-11-23  Rami Lehti  <Rami.Lehti@Finland.Sun.COM>
+
+	* Fixed MHASH_COMPATIBILITY problem. Mhash library version 0.6.1 is
+	  now required.
+	* Began tidying up the code so that both the internal and mhash
+	  hashes can be used at the same time.
+
+1999-11-05  Pablo Virolainen  <pablo@cs.tut.fi>
+
+	* Fixed bug in tree traverce. Now works without permission check.
+
+1999-10-26  Rami Lehti  <rammer@cs.tut.fi>
+
+	* Added support for mhash library (done mostly by pablo)
+	* Fixed a --with-config-file bug in configure.in
+	* Fixed md bug when using internal functions
+	* Finally updated the Changelog
+
+1999-08-26  Rami Lehti  <rami@leevi.ton.tut.fi>
+
+	* Fixed config file handling
+
+(Wed, 25 Aug 1999 11:03:34  (EET):rammer)
+Changed: ChangeLog,configure.in
+	Upped version to 0.4
+
+(Thu, 26 Aug 1999 16:36:14  (EET):rammer)
+Changed: configure aide.conf.5 compare_db.c,gen_list.c,util.c
+	util.h,conf_lex.l
+	Fixed a bug in gen_seltree
+	Changed default behaviour of verbositylevel 5.
+	Now it prints the detailed info about changed files too.
+	Now on level 5 if a dir is added a warning is shown that
+	foo files were added under the previous dir and not the files
+	themselves. On level 20 the behaviour is still the same.
+
+---------------------
+
+

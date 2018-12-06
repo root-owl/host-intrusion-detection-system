@@ -1,0 +1,153 @@
+Version 0.16 (NOT_YET_RELEASED)
+    * BACKWARDS INCOMPATIBLE CHANGES:
+        - Negative selection lines of the form '!<regex> <groups>' are no
+          longer supported (use '!<regex>' instead)
+        - The switch to Perl 5 Compatible Regular Expressions and the fix of
+          '.*'-rule matching may result in different rule matching behaviour
+    * Support restricted selection lines
+    * Switch to PCRE library (drops bundled GNU regexp library)
+    * New config options:
+        - database_add_metadata
+        - database_attrs
+        - report_base16
+        - report_detailed_init
+        - report_force_attrs (deprecates report_attributes)
+        - report_ignore_added_attrs
+        - report_ignore_removed_attrs
+        - report_ignore_changed_attrs (deprecates ignore_list)
+        - report_ignore_e2fsattrs
+        - report_quiet
+        - root_prefix
+    * New '--limit' parameter
+    * Report changes:
+        - enable summarize_changes by default
+        - use '|' to separate the old value from the new one
+        - wrap attribute values instead of cut them off
+        - side-by-side output of acl and xattrs values
+        - adjust file type letters in summarize_changes output
+        - add numeric timezone to time string
+        - add info about verbose level to report if it differs from standard
+          value
+        - add info about number of entries if aide found no changes or
+          the database has been initialized
+        - add run time to report
+        - print "End timestamp" message in report
+        - print human-readable info about ignored and forced attributes in report
+        - print checksums of databases in verbose level 2 or higher
+        - print added and removed attribute values of changed entries in
+          verbose level 6 or higher
+        - print details about added and removed entries in verbose level 7
+          or higher
+        - print added or removed attributes of changed entries if forced via
+          report_force_attrs
+    * New default group: X
+    * Fix '.*'-rule matching
+    * Handle tilde (~) in database paths and report urls
+    * Sort entries of database file
+    * Compare database entries just once
+    * Add warning if a group is redefined
+    * Update documentation
+    * Bug fixes
+    * Code clean up
+
+Version 0.15.1
+	* Fixed bug with DB_CHECKINODE
+
+Version 0.15
+	* Added new grouped option
+	* Sort files in report by filename
+	* Added support for e2fsattrs attribute
+	* Added support for ftype attribute
+	* Bug fixes
+
+Version 0.14.2
+	* Report correct file type in "Detailed information
+	  about changes" section
+	* Bug fixes
+
+Version 0.14.1
+	* Added aide-attributes.sh contrib script
+	* Bug fixes
+
+Version 0.14
+	* Renewed autoconf mechanism
+	* Resolved licensing conflicts
+	* New feature to summarize changes
+	* Added prelink support
+	* Many bugfixes
+
+Version 0.13.1
+	* Fixed bug with reading gzipped aide.db files
+	* Removed dead ustat code
+
+Version 0.13
+	* Added support for selinux and xattr attributes
+	  (kindly contributed by Red Hat)
+	* Added support for the Linux Audit System
+	  (kindly contributed by Red Hat)
+	* Fixed usage of libgcrypt instead of libmhash
+	* Added file locking for output files
+	* Fixed bugs
+
+Version 0.12
+	* Fixed bugs
+	* Allow http/https/ftp URLs through libcurl
+	* Support posix_fadvice() to avoid caching files
+
+Version 0.11
+	* Fixed many bugs
+	* Updated automake/autoconf scripts
+	* Use snprintf by Mark Martinec if not in C library
+	* Support for more (legacy) Unix systems and cygwin
+	* Open files with O_NOATIME on supported Linux systems
+	* Added I/ANF/ARF directives
+
+Version 0.10
+	* Fixed bugs
+	* Moved project over to sourceforge.net
+	* Change of project ownership
+
+Version 0.9
+	* Fixed bugs
+	* Added support for keyed md check of db and config
+	* Removed dependancy on libgcrypt
+	* Added dependancy on mhash
+
+Version 0.8
+	* Fixed loads and loads of bugs
+        * Added syslog backend
+        * Report format changed
+        * added lots of parameters see man page and configure --help
+        * added ACL support for SunOS 5.x (and compatibles)
+	* libgcrypt is now separate and required
+
+Version 0.7
+	* Bug fixes
+	* Compressed database support
+	* Linkname checking
+	* Mhash support (version 0.8.1 of mhash required)
+
+Version 0.6
+	* Bug fixes
+	* Mhash support fixed
+	* MD sums fixed for now
+
+Version 0.5 
+	* Bug fixes
+	* ignore_list support
+	* Mhash library support (version 0.6.1 of mhash required)
+	* Disclaimer notices
+
+Version 0.4
+	* Bug fixes 
+
+Version 0.3
+	* Added --update command
+	* some bugfixes
+Version 0.2
+	* Bugfix release
+Version 0.1
+	* Implemented lots of stuff
+Version 0.0.0.1
+	* Nothing yet
+
