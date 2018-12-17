@@ -231,9 +231,17 @@ static DB_ATTR_TYPE get_changed_attributes(db_line* l1,db_line* l2)
 
     DB_ATTR_TYPE ret=0;
 
-    if ((DB_FTYPE&l1->attr && DB_FTYPE&l2->attr) && (l1->perm&S_IFMT)!=(l2->perm&S_IFMT)) { ret|=DB_FTYPE; }
+    if ((DB_FTYPE&l1->attr && DB_FTYPE&l2->attr) &&
+            (l1->perm&S_IFMT)!=(l2->perm&S_IFMT))
+    {
+        ret|=DB_FTYPE;
+    }
     easy_function_compare(DB_LINKNAME,linkname,has_str_changed);
-    if ((DB_SIZEG&l1->attr && DB_SIZEG&l2->attr) && l1->size>l2->size){ ret|=DB_SIZEG; }
+    if ((DB_SIZEG&l1->attr && DB_SIZEG&l2->attr) &&
+            l1->size>l2->size)
+    {
+        ret|=DB_SIZEG;
+    }
     easy_compare(DB_SIZE,size);
     easy_compare(DB_BCOUNT,bcount);
     easy_compare(DB_PERM,perm);
@@ -655,10 +663,14 @@ static int check_list_for_match(list* rxrlist,char* text,DB_ATTR_TYPE* attr, RES
         if (pcre_retval >= 0)
         {
             error(231,"\"%s\" matches (pcre_exec return value: %i) rule from line #%ld: %s\n",text, pcre_retval, ((rx_rule*)r->data)->conf_lineno,((rx_rule*)r->data)->rx);
-            if (!((rx_rule*)r->data)->restriction || file_type&((rx_rule*)r->data)->restriction)
+            if (!((rx_rule*)r->data)->restriction || file_type & ((rx_rule*)r->data)->restriction)
             {
                 *attr=((rx_rule*)r->data)->attr;
                 error(231,"\"%s\" matches restriction (%u) for rule from line #%ld: %s\n",text, ((rx_rule*)r->data)->restriction, ((rx_rule*)r->data)->conf_lineno,((rx_rule*)r->data)->rx);
+                /*
+                if(strcmp(text,"/file_a") == 0)
+                    fprintf(stdout, "\n[%s:%d:%s] filename:%s attr:0x%x pcre_retval:%d restriction:%d fileType:%d rx:%s return 0\n", __FILE__, __LINE__, __func__, text, *attr, pcre_retval, ((rx_rule*)r->data)->restriction, file_type, ((rx_rule*)r->data)->rx);
+                    */
                 return 0;
             }
             else
@@ -677,6 +689,10 @@ static int check_list_for_match(list* rxrlist,char* text,DB_ATTR_TYPE* attr, RES
             error(232,"\"%s\" doesn't match (pcre_exec return value: %i) rule from line #%ld: %s\n",text, pcre_retval,((rx_rule*)r->data)->conf_lineno,((rx_rule*)r->data)->rx);
         }
     }
+    /*
+    if(strcmp(text,"/file_a") == 0 && retval == 0)
+        fprintf(stdout, "\n[%s:%d:%s] filename:%s attr:0x%x return 0\n", __FILE__, __LINE__, __func__, text, *attr);
+        */
     return retval;
 }
 
@@ -706,6 +722,7 @@ static int check_node_for_match(seltree*node,char*text, mode_t perm, int retval,
     }
 
     file_type = get_file_type(perm);
+    //fprintf(stdout, "\n[%s:%d:%s] text:%s perm:0x%x fileType:%x\n", __FILE__, __LINE__, __func__, text, perm, file_type);
 
     /* if this call is not recursive we check the equals list and we set top *
     * and retval so we know following calls are recursive */
@@ -714,7 +731,12 @@ static int check_node_for_match(seltree*node,char*text, mode_t perm, int retval,
         top=1;
         retval|=16;
 
-        switch (check_list_for_match(node->equ_rx_lst, text, attr, file_type))
+        int cm = check_list_for_match(node->equ_rx_lst, text, attr, file_type);
+        /*
+        if(strcmp(text,"/file_a") == 0)
+            fprintf(stdout, "\n[%s:%d:%s] filename:%s perm:0x%x attr:0x%x retval:0x%x cm:%d \n", __FILE__, __LINE__, __func__, text, perm, *attr, retval, cm);
+            */
+        switch (cm)
         {
             case 0:
             {
@@ -735,12 +757,21 @@ static int check_node_for_match(seltree*node,char*text, mode_t perm, int retval,
     }
     /* We'll use retval to pass information on whether to recurse
     * the dir or not */
+    /*
+    if(strcmp(text,"/file_a") == 0)
+        fprintf(stdout, "\n[%s:%d:%s] filename:%s perm:0x%x attr:0x%x retval:0x%x\n", __FILE__, __LINE__, __func__, text, perm, *attr, retval);
+        */
 
 
     /* If 4 and 8 are not set, we will check for matches */
     if(!(retval&(4|8)))
     {
-        switch (check_list_for_match(node->sel_rx_lst, text, attr, file_type))
+        int cm = check_list_for_match(node->sel_rx_lst, text, attr, file_type);
+        /*
+        if(strcmp(text,"/file_a") == 0)
+            fprintf(stdout, "\n[%s:%d:%s] filename:%s perm:0x%x attr:0x%x retval:0x%x cm:%d \n", __FILE__, __LINE__, __func__, text, perm, *attr, retval, cm);
+            */
+        switch (cm)
         {
             case 0:
             {
@@ -760,9 +791,18 @@ static int check_node_for_match(seltree*node,char*text, mode_t perm, int retval,
         }
     }
 
+    /*
+    if(strcmp(text,"/file_a") == 0)
+        fprintf(stdout, "\n[%s:%d:%s] filename:%s perm:0x%x attr:0x%x retval:0x%x\n", __FILE__, __LINE__, __func__, text, perm, *attr, retval);
+        */
+
     /* Now let's check the ancestors */
     retval=check_node_for_match(node->parent,text, perm, retval,attr);
 
+    /*
+    if(strcmp(text,"/file_a") == 0)
+        fprintf(stdout, "\n[%s:%d:%s] filename:%s perm:0x%x attr:0x%x retval:0x%x\n", __FILE__, __LINE__, __func__, text, perm, *attr, retval);
+        */
 
     /* Negative regexps are the strongest so they are checked last */
     /* If this file is to be added */
@@ -774,6 +814,12 @@ static int check_node_for_match(seltree*node,char*text, mode_t perm, int retval,
             retval=0;
         }
     }
+
+    /*
+    if(strcmp(text,"/file_a") == 0)
+        fprintf(stdout, "\n[%s:%d:%s] filename:%s perm:0x%x attr:0x%x retval:0x%x\n", __FILE__, __LINE__, __func__, text, perm, *attr, retval);
+        */
+
     /* Now we discard the info whether a match was made or not *
     * and just return 0,1 or 2 */
     if(top)
@@ -962,17 +1008,43 @@ static void add_file_to_tree(seltree* tree,db_line* file,int db, DB_ATTR_TYPE at
     DB_ATTR_TYPE localignorelist=0;
     DB_ATTR_TYPE ignored_added_attrs, ignored_removed_attrs, ignored_changed_attrs;
 
+    //fprintf(stdout, "\n[%s:%d:%s] ---------- add_file_to_tree() fail\n", __FILE__, __LINE__, __func__);
+
+    /*
+    if (strcmp(file->filename,"/folder_b/folder_ba/file_baa") == 0)
+    {
+        //fprintf(stdout, "\n[%s:%d:%s] DB_DISK %s checked:0x%x\n", __FILE__, __LINE__, __func__, file->filename, node->checked);
+        seltree* tnode=NULL;
+        if((tnode = get_seltree_node(tree,"/folder_b/folder_ba")) == NULL)
+        {
+            fprintf(stdout, "\n[%s:%d:%s] ---------- get folder_ba fail\n", __FILE__, __LINE__, __func__);
+        }
+        else
+        {
+            fprintf(stdout, "\n[%s:%d:%s] new:%s tree %s checked:0x%x\n", __FILE__, __LINE__, __func__, file->filename, tnode->path, tnode->checked);
+        }
+
+    }
+    */
+
+    //fprintf(stdout, "\n[%s:%d:%s] ---------- add_file_to_tree() fail\n", __FILE__, __LINE__, __func__);
+
     node = get_seltree_node(tree,file->filename);
+
+    //fprintf(stdout, "\n[%s:%d:%s] ---------- add_file_to_tree() fail\n", __FILE__, __LINE__, __func__);
 
     if(!node)
     {
         node = new_seltree_node(tree,file->filename,0,NULL);
     }
 
+    //fprintf(stdout, "\n[%s:%d:%s] ---------- add_file_to_tree() fail\n", __FILE__, __LINE__, __func__);
+
     if(file==NULL)
     {
         error(0, "add_file_to_tree was called with NULL db_line\n");
     }
+    //fprintf(stdout, "\n[%s:%d:%s] ---------- add_file_to_tree() fail\n", __FILE__, __LINE__, __func__);
 
     /* add note to this node which db has modified it */
     node->checked |= db;
@@ -982,6 +1054,7 @@ static void add_file_to_tree(seltree* tree,db_line* file,int db, DB_ATTR_TYPE at
     //fprintf(stdout, "[%s:%d:%s] db:%d file->attr:%x \n", __FILE__, __LINE__, __func__, db, file->attr);
     strip_dbline(file);
 
+    //fprintf(stdout, "\n[%s:%d:%s] ---------- add_file_to_tree() fail\n", __FILE__, __LINE__, __func__);
     switch (db)
     {
         case DB_OLD:
@@ -1010,20 +1083,67 @@ static void add_file_to_tree(seltree* tree,db_line* file,int db, DB_ATTR_TYPE at
             return;
         }
     }
+    //fprintf(stdout, "\n[%s:%d:%s] ---------- add_file_to_tree() fail\n", __FILE__, __LINE__, __func__);
     /* We have a way to ignore some changes... */
     ignored_added_attrs = get_special_report_group("report_ignore_added_attrs");
     ignored_removed_attrs = get_special_report_group("report_ignore_removed_attrs");
     ignored_changed_attrs = get_special_report_group("report_ignore_changed_attrs");
 
+    /*
+    if(strcmp(file->filename,"/file_a") == 0)
+        fprintf(stdout, "[%s:%d:%s] +++ 0x%x 0x%x 0x%x \n",
+                __FILE__, __LINE__, __func__, ignored_added_attrs, ignored_removed_attrs, ignored_changed_attrs);
+                */
+
+    //fprintf(stdout, "\n[%s:%d:%s] ---------- add_file_to_tree() fail\n", __FILE__, __LINE__, __func__);
+
+    /*
+    if (strcmp(file->filename,"/folder_b/folder_ba/file_baa") == 0)
+    {
+        //fprintf(stdout, "\n[%s:%d:%s] DB_DISK %s checked:0x%x\n", __FILE__, __LINE__, __func__, file->filename, node->checked);
+        seltree* tnode=NULL;
+        if((tnode = get_seltree_node(tree,"/folder_b/folder_ba")) == NULL)
+        {
+            fprintf(stdout, "\n[%s:%d:%s] ---------- get folder_ba fail\n", __FILE__, __LINE__, __func__);
+        }
+        else
+        {
+            fprintf(stdout, "\n[%s:%d:%s] new:%s tree %s checked:0x%x\n", __FILE__, __LINE__, __func__, file->filename, tnode->path, tnode->checked);
+        }
+
+    }
+    */
+    //fprintf(stdout, "\n[%s:%d:%s] ---------- add_file_to_tree() fail\n", __FILE__, __LINE__, __func__);
+
     if((node->checked & DB_OLD) && (node->checked & DB_NEW))
     {
-        fprintf(stdout, "[%s:%d:%s] ---------------------------------- \n", __FILE__, __LINE__, __func__);
-        if (((node->old_data)->attr&~((node->new_data)->attr)&~(ignored_removed_attrs)) | (~((node->old_data)->attr)&(node->new_data)->attr&~(ignored_added_attrs)))
+        //fprintf(stdout, "[%s:%d:%s] ---------------------------------- \n", __FILE__, __LINE__, __func__);
+        if (((node->old_data)->attr & ~((node->new_data)->attr) & ~(ignored_removed_attrs)) |
+                (~((node->old_data)->attr) & (node->new_data)->attr & ~(ignored_added_attrs)))
         {
             error(2,"Entry %s in databases has different attributes: %llx %llx\n", node->old_data->filename,node->old_data->attr,node->new_data->attr);
         }
 
+        //fprintf(stdout, "\n[%s:%d:%s] ---------- add_file_to_tree() fail\n", __FILE__, __LINE__, __func__);
+        /*
+        if (strcmp(node->path, "/file_a") == 0)
+        {
+            //fprintf(stdout, "\n[%s:%d:%s] [%s] checked:0x%x attr:0x%llx ch_attr:0x%llx fAttr:0x%llx cAttr:0x%llx rAttr:0x%llx aAttr:0x%llx",
+             //       __FILE__, __LINE__, __func__, node->path, node->checked, node->attr, node->changed_attrs,
+             //       forced_attrs, ignored_changed_attrs, ignored_removed_attrs, ignored_added_attrs);
+            //fprintf(stdout, "\n[%s:%d:%s] [%s - old] size:%d attr:0x%x\n ", __FILE__, __LINE__, __func__, node->path, node->old_data->size, node->old_data->attr);
+            //fprintf(stdout, "\n[%s:%d:%s] [%s - new] size:%d attr:0x%x\n ", __FILE__, __LINE__, __func__, node->path, node->new_data->size, node->new_data->attr);
+            fprintf(stdout, "\n[%s:%d:%s] [%s] attr:0x%x chAttr:0x%x\n ", __FILE__, __LINE__, __func__, node->path, node->attr, node->changed_attrs);
+        }
+        */
         node->changed_attrs = get_changed_attributes(node->old_data,node->new_data);
+        /*
+        if (strcmp(node->path, "/file_a") == 0)
+        {
+            fprintf(stdout, "\n[%s:%d:%s] [%s] attr:0x%x chAttr:0x%x\n ", __FILE__, __LINE__, __func__, node->path, node->attr, node->changed_attrs);
+        }
+        */
+        //fprintf(stdout, "\n[%s:%d:%s] ---------- add_file_to_tree() fail\n", __FILE__, __LINE__, __func__);
         /* Free the data if same else leave as is for report_tree */
         if((~(ignored_changed_attrs) & node->changed_attrs) == RETOK)
         {
@@ -1047,6 +1167,24 @@ static void add_file_to_tree(seltree* tree,db_line* file,int db, DB_ATTR_TYPE at
                 free(node->new_data);
                 node->new_data=NULL;
             }
+            /*
+            fprintf(stdout, "\n[%s:%d:%s] ---------- add_file_to_tree() fileP:%p fn:%s fail\n", __FILE__, __LINE__, __func__, file, file->filename);
+            if (strcmp(file->filename,"/folder_b/folder_ba/file_baa") == 0)
+            {
+                fprintf(stdout, "\n[%s:%d:%s] ---------- add_file_to_tree() fail\n", __FILE__, __LINE__, __func__);
+                //fprintf(stdout, "\n[%s:%d:%s] DB_DISK %s checked:0x%x\n", __FILE__, __LINE__, __func__, file->filename, node->checked);
+                seltree* tnode=NULL;
+                if((tnode = get_seltree_node(tree,"/folder_b/folder_ba")) == NULL)
+                {
+                    fprintf(stdout, "\n[%s:%d:%s] ---------- get folder_ba fail\n", __FILE__, __LINE__, __func__);
+                }
+                else
+                {
+                    fprintf(stdout, "\n[%s:%d:%s] new:%s tree %s checked:0x%x\n", __FILE__, __LINE__, __func__, file->filename, tnode->path, tnode->checked);
+                }
+            }
+            fprintf(stdout, "\n[%s:%d:%s] ---------- add_file_to_tree() fail\n", __FILE__, __LINE__, __func__);
+            */
             return;
         }
     }
@@ -1057,7 +1195,7 @@ static void add_file_to_tree(seltree* tree,db_line* file,int db, DB_ATTR_TYPE at
     */
     if( (node->old_data != NULL || node->new_data != NULL) && (file->attr & DB_CHECKINODE))
     {
-        fprintf(stdout, "[%s:%d:%s] ---------------------------------- \n", __FILE__, __LINE__, __func__);
+        //fprintf(stdout, "[%s:%d:%s] ---------------------------------- \n", __FILE__, __LINE__, __func__);
         /* Check if file was moved (same inode, different name in the other DB)*/
         db_line *oldData;
         db_line *newData;
@@ -1106,13 +1244,13 @@ static void add_file_to_tree(seltree* tree,db_line* file,int db, DB_ATTR_TYPE at
 
     if( (db == DB_NEW) && (node->new_data!=NULL) && (file->attr & DB_NEWFILE) )
     {
-        fprintf(stdout, "[%s:%d:%s] ---------------------------------- \n", __FILE__, __LINE__, __func__);
+        //fprintf(stdout, "[%s:%d:%s] ---------------------------------- \n", __FILE__, __LINE__, __func__);
         node->checked|=NODE_ALLOW_NEW;
     }
 
     if( (db == DB_OLD) && (node->old_data!=NULL) && (file->attr & DB_RMFILE) )
     {
-        fprintf(stdout, "[%s:%d:%s] ---------------------------------- \n", __FILE__, __LINE__, __func__);
+        //fprintf(stdout, "[%s:%d:%s] ---------------------------------- \n", __FILE__, __LINE__, __func__);
         node->checked|=NODE_ALLOW_RM;
     }
 }
@@ -1166,7 +1304,21 @@ int check_rxtree(char* filename,seltree* tree,DB_ATTR_TYPE* attr, mode_t perm)
     pnode=get_seltree_node(tree,parentname);
 
     *attr=0;
+    /*
+    if(strcmp(filename, "/folder_b/file_ba") == 0)
+    {
+        fprintf(stdout, "\n[%s:%d:%s] filename:%s pnode:%p perm:0x%x attr:0x%x retval:%x\n", __FILE__, __LINE__, __func__, filename, pnode, perm, *attr, retval);
+    }
+    */
+
     retval=check_node_for_match(pnode,filename, perm, 0,attr);
+
+    /*
+    if(strcmp(filename, "/folder_b/file_ba") == 0)
+    {
+        fprintf(stdout, "\n[%s:%d:%s] filename:%s pnode:%p perm:0x%x attr:0x%x retval:%x\n", __FILE__, __LINE__, __func__, filename, pnode, perm, *attr, retval);
+    }
+    */
 
     free(parentname);
 
@@ -1292,7 +1444,7 @@ static void write_tree(seltree* node)
         //fprintf(stdout,"+++ write tree +++\n");
         if(conf->enable_JSON_DB)
         {
-            dbJSON_writeFileObject(conf->jDB, node->new_data, conf);
+            dbJSON_writeFileObject(conf->jDB, node, conf);
             //fprintf(stdout,"+++ write JSON tree +++\n");
         }
     }
@@ -1313,7 +1465,8 @@ void populate_tree(seltree* tree)
     DB_ATTR_TYPE attr=0;
     seltree* node=NULL;
 
-    fprintf(stdout, "[%s:%d:%s] conf->action:%x\n", __FILE__, __LINE__, __func__, conf->action);
+    //fprintf(stdout, "\n[%s:%d:%s] conf->action:%x S_IFMT:0x%x:%d:O%o \n", __FILE__, __LINE__, __func__, conf->action, S_IFMT, S_IFMT, S_IFMT);
+    //fprintf(stdout, "\n[%s:%d:%s] conf->action:%x S_IFLNK:0x%x:%d:O%o \n", __FILE__, __LINE__, __func__, conf->action, S_IFLNK, S_IFLNK, S_IFLNK);
     /* With this we avoid unnecessary checking of removed files. */
     if(conf->action & DO_INIT)
     {
@@ -1349,13 +1502,46 @@ void populate_tree(seltree* tree)
         }
     }
 
+    //fprintf(stdout, "\n[%s:%d:%s] +++ Loading DB_NEW finished!\n", __FILE__, __LINE__, __func__);
+
     if((conf->action & DO_INIT) || (conf->action & DO_COMPARE))
     {
         /* FIXME  */
         new=NULL;
         while((new = db_readline(DB_DISK)) != NULL)
         {
+            /*
+            if (strcmp(new->filename,"/folder_b/folder_ba") == 0)
+            {
+                fprintf(stdout, "\n[%s:%d:%s] DB_DISK %s attr:0x%llx\n", __FILE__, __LINE__, __func__, new->filename, new->attr);
+            }
+
+            if((node = get_seltree_node(tree,"/folder_b/folder_ba")) == NULL)
+            {
+                fprintf(stdout, "\n[%s:%d:%s] DB_DISK ba new:%s get folder_ba fail\n", __FILE__, __LINE__, __func__, new->filename);
+            }
+            else
+            {
+                fprintf(stdout, "\n[%s:%d:%s] DB_DISK ba new:%s tree %s checked:0x%x\n", __FILE__, __LINE__, __func__, new->filename, node->path, node->checked);
+            }
+            */
+
+
             add_file_to_tree(tree,new,DB_NEW,attr);
+
+            /*
+            //if (strcmp(new->filename,"/folder_b/folder_ba") == 0)
+            {
+                if((node = get_seltree_node(tree,"/folder_b/folder_ba")) == NULL)
+                {
+                    fprintf(stdout, "\n[%s:%d:%s] DB_DISK aa new:%s get folder_ba fail\n", __FILE__, __LINE__, __func__, new->filename);
+                }
+                else
+                {
+                    fprintf(stdout, "\n[%s:%d:%s] DB_DISK aa new:%s tree %s checked:0x%x\n", __FILE__, __LINE__, __func__, new->filename, node->path, node->checked);
+                }
+            }
+            */
         }
     }
 
@@ -1363,25 +1549,36 @@ void populate_tree(seltree* tree)
     {
         while((old = db_readline(DB_OLD)) != NULL)
         {
+            //fprintf(stdout, "\n[%s:%d:%s] +++ Loading DB_OLD 1 filename:%s \n", __FILE__, __LINE__, __func__, old->filename);
             /* This is needed because check_rxtree assumes there is a parent
             for the node for old->filename */
             if((node = get_seltree_node(tree,old->filename)) == NULL)
             {
+                //fprintf(stdout, "\n[%s:%d:%s] +++ Loading DB_OLD 1.1 filename:%s \n", __FILE__, __LINE__, __func__, old->filename);
                 node = new_seltree_node(tree,old->filename,0,NULL);
+                //fprintf(stdout, "\n[%s:%d:%s] +++ Loading DB_OLD 1.2 filename:%s \n", __FILE__, __LINE__, __func__, old->filename);
             }
 
+            //fprintf(stdout, "\n[%s:%d:%s] +++ Loading DB_OLD 1 filename:%s \n", __FILE__, __LINE__, __func__, old->filename);
+
             add = check_rxtree(old->filename,tree, &attr, old->perm);
+            //fprintf(stdout, "\n[%s:%d:%s] +++ Loading DB_OLD 3 filename:%s \n", __FILE__, __LINE__, __func__, old->filename);
 
             if(add > 0)
             {
+                //fprintf(stdout, "\n[%s:%d:%s] +++ Loading DB_OLD 4.1 filename:%s \n", __FILE__, __LINE__, __func__, old->filename);
                 add_file_to_tree(tree,old,DB_OLD,attr);
+                //fprintf(stdout, "\n[%s:%d:%s] +++ Loading DB_OLD 4.2 filename:%s \n", __FILE__, __LINE__, __func__, old->filename);
             }
             else if (conf->limit!=NULL && add < 0)
             {
+                //fprintf(stdout, "\n[%s:%d:%s] +++ Loading DB_OLD 5.1 filename:%s \n", __FILE__, __LINE__, __func__, old->filename);
                 add_file_to_tree(tree,old,DB_OLD|DB_NEW,attr);
+                //fprintf(stdout, "\n[%s:%d:%s] +++ Loading DB_OLD 5.1 filename:%s \n", __FILE__, __LINE__, __func__, old->filename);
             }
             else
             {
+                //fprintf(stdout, "\n[%s:%d:%s] +++ Loading DB_OLD 6.1 filename:%s \n", __FILE__, __LINE__, __func__, old->filename);
                 free_db_line(old);
                 free(old);
                 old = NULL;
@@ -1390,9 +1587,13 @@ void populate_tree(seltree* tree)
                     error(3,_("WARNING: Old db contains a entry that shouldn\'t be there, run --init or --update\n"));
                     initdbwarningprinted=1;
                 }
+                //fprintf(stdout, "\n[%s:%d:%s] +++ Loading DB_OLD 6.1 filename:%s \n", __FILE__, __LINE__, __func__, old->filename);
             }
+            //fprintf(stdout, "\n[%s:%d:%s] +++ Loading DB_OLD 7.1 filename:%s \n", __FILE__, __LINE__, __func__, old->filename);
         }
     }
+
+    //fprintf(stdout, "\n[%s:%d:%s] +++ Loading DB_OLD finished!\n", __FILE__, __LINE__, __func__);
 
     if(conf->action & DO_INIT)
     {

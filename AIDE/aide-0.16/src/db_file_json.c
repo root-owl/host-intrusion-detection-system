@@ -792,13 +792,65 @@ end:
     return NULL;
 }
 
-int dbJSON_writeFileObject(JsonDB *jDB, db_line* line, db_config* dbconf)
+void dbJSON_addNodeInfo2FileObj(cJSON* fileObj, seltree* node)
 {
+    char * dst = NULL;
+    int ret = db_writelong_ram(&dst, node->attr);
+    if(ret <= 0 || cJSON_AddStringToObject(fileObj, "attrStr_node", dst) == NULL)
+    {
+        if(dst != NULL)
+        {
+            free(dst);
+        }
+    }
+    if(dst != NULL)
+    {
+        free(dst);
+    }
+
+    // changed_attrs
+    dst = NULL;
+    ret = db_writelong_ram(&dst, node->changed_attrs);
+    if(ret <= 0 || cJSON_AddStringToObject(fileObj, "changed_attrs_node", dst) == NULL)
+    {
+        if(dst != NULL)
+        {
+            free(dst);
+        }
+    }
+    if(dst != NULL)
+    {
+        free(dst);
+    }
+
+    // checked
+    dst = NULL;
+    ret = db_writeint_ram(&dst, node->checked);
+    if(ret <= 0 || cJSON_AddStringToObject(fileObj, "checked_node", dst) == NULL)
+    {
+        if(dst != NULL)
+        {
+            free(dst);
+        }
+    }
+    if(dst != NULL)
+    {
+        free(dst);
+    }
+
+}
+
+int dbJSON_writeFileObject(JsonDB *jDB, seltree* node, db_config* dbconf)
+{
+    db_line * line = node->new_data;
+
     cJSON * fileObj = dbJSON_line2FileObject(line, dbconf);
     if(fileObj != NULL)
     {
         if(++jDB->itemCount % 2000 == 0)
             fprintf(stdout,"+++ got JSON file obj %d +++\n", jDB->itemCount);
+
+        //dbJSON_addNodeInfo2FileObj(fileObj, node);
         cJSON_AddItemToArray(jDB->fileList, fileObj);
     }
     return 0;

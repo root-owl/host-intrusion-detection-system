@@ -182,25 +182,34 @@ const char* attrs_string[] = { "filename", "l", "p", "u", "g", "s", "a", "c", "m
 /*************/
 #endif
 
-static DB_ATTR_TYPE get_special_report_group(char* group) {
+static DB_ATTR_TYPE get_special_report_group(char* group)
+{
     DB_ATTR_TYPE attr = get_groupval(group);
     return attr==DB_ATTR_UNDEF?0:attr;
 }
 
-static char* report_attrs(DB_ATTR_TYPE attrs) {
+static char* report_attrs(DB_ATTR_TYPE attrs)
+{
     char* str;
     int j = 1;
     int num_attrs = sizeof(attrs_string)/sizeof(char*);
-    for (int i = 0; i < num_attrs; ++i) {
-        if ((1LLU<<i)&attrs) {
+    for (int i = 0; i < num_attrs; ++i)
+    {
+        if ((1LLU<<i)&attrs)
+        {
             j += strlen(attrs_string[i])+1;
         }
     }
     str = malloc(j * sizeof (char));
     j=0;
-    for (int i = 0; i < num_attrs; ++i) {
-        if ((1LLU<<i)&attrs) {
-            if (j) { str[j++] = '+'; }
+    for (int i = 0; i < num_attrs; ++i)
+    {
+        if ((1LLU<<i)&attrs)
+        {
+            if (j)
+            {
+                str[j++] = '+';
+            }
             j += sprintf(&str[j], "%s", attrs_string[i]);
         }
     }
@@ -208,26 +217,38 @@ static char* report_attrs(DB_ATTR_TYPE attrs) {
     return str;
 }
 
-static char get_file_type_char(mode_t mode) {
-    switch (mode & S_IFMT) {
-        case S_IFREG: return 'f';
-        case S_IFDIR: return 'd';
+static char get_file_type_char(mode_t mode)
+{
+    switch (mode & S_IFMT)
+    {
+        case S_IFREG:
+            return 'f';
+        case S_IFDIR:
+            return 'd';
 #ifdef S_IFIFO
-        case S_IFIFO: return 'p';
+        case S_IFIFO:
+            return 'p';
 #endif
-        case S_IFLNK: return 'l';
-        case S_IFBLK: return 'b';
-        case S_IFCHR: return 'c';
+        case S_IFLNK:
+            return 'l';
+        case S_IFBLK:
+            return 'b';
+        case S_IFCHR:
+            return 'c';
 #ifdef S_IFSOCK
-        case S_IFSOCK: return 's';
+        case S_IFSOCK:
+            return 's';
 #endif
 #ifdef S_IFDOOR
-        case S_IFDOOR: return 'D';
+        case S_IFDOOR:
+            return 'D';
 #endif
 #ifdef S_IFPORT
-        case S_IFPORT: return 'P';
+        case S_IFPORT:
+            return 'P';
 #endif
-        default: return '?';
+        default:
+            return '?';
     }
 }
 
@@ -336,41 +357,56 @@ static char* e2fsattrs2string(unsigned long flags, int flags_only) {
 }
 #endif
 
-static char* get_file_type_string(mode_t mode) {
-    switch (mode & S_IFMT) {
-        case S_IFREG: return _("File");
-        case S_IFDIR: return _("Directory");
+static char* get_file_type_string(mode_t mode)
+{
+    switch (mode & S_IFMT)
+    {
+        case S_IFREG:
+            return _("File");
+        case S_IFDIR:
+            return _("Directory");
 #ifdef S_IFIFO
-        case S_IFIFO: return _("FIFO");
+        case S_IFIFO:
+            return _("FIFO");
 #endif
-        case S_IFLNK: return _("Link");
-        case S_IFBLK: return _("Block device");
-        case S_IFCHR: return _("Character device");
+        case S_IFLNK:
+            return _("Link");
+        case S_IFBLK:
+            return _("Block device");
+        case S_IFCHR:
+            return _("Character device");
 #ifdef S_IFSOCK
-        case S_IFSOCK: return _("Socket");
+        case S_IFSOCK:
+            return _("Socket");
 #endif
 #ifdef S_IFDOOR
-        case S_IFDOOR: return _("Door");
+        case S_IFDOOR:
+            return _("Door");
 #endif
 #ifdef S_IFPORT
-        case S_IFPORT: return _("Port");
+        case S_IFPORT:
+            return _("Port");
 #endif
-        case 0: return NULL;
-        default: return _("Unknown file type");
+        case 0:
+            return NULL;
+        default:
+            return _("Unknown file type");
     }
 }
 
-static char* byte_to_base16(byte* src, size_t ssize) {
+static char* byte_to_base16(byte* src, size_t ssize)
+{
     char* str = malloc((2*ssize+1) * sizeof (char));
     size_t i;
-    for(i=0; i < ssize; ++i) {
+    for(i=0; i < ssize; ++i)
+    {
         snprintf(&str[2*i], 3, "%02x", src[i]);
     }
     return str;
 }
 
-static int get_attribute_values(DB_ATTR_TYPE attr, db_line* line,
-        char* **values) {
+static int get_attribute_values(DB_ATTR_TYPE attr, db_line* line, char* **values)
+{
 
 #define easy_string(s) \
 l = strlen(s)+1; \
@@ -453,67 +489,107 @@ snprintf(*values[0], l, "%s",s);
     }
 }
 
-static void print_line(seltree* node) {
-    if(conf->summarize_changes==1) {
+static void print_line(seltree* node)
+{
+    if(conf->summarize_changes==1)
+    {
         int i;
         int length = sizeof(summary_attributes)/sizeof(DB_ATTR_TYPE);
         char* summary = malloc ((length+1) * sizeof (char));
-        if (node->checked&(NODE_ADDED|NODE_REMOVED)) {
-            summary[0]=get_file_type_char((node->checked&NODE_REMOVED?node->old_data:node->new_data)->perm);
-            for(i=1;i<length;i++){
-                summary[i]=node->checked&NODE_ADDED?'+':'-';
+        /*
+        if (strcmp(node->path, "/file_a") == 0)
+        {
+            fprintf(stdout, "\n[%s:%d:%s] [%s] checked:0x%x attr:0x%llx ch_attr:0x%llx fAttr:0x%llx cAttr:0x%llx rAttr:0x%llx aAttr:0x%llx",
+                    __FILE__, __LINE__, __func__, node->path, node->checked, node->attr, node->changed_attrs,
+                    forced_attrs, ignored_changed_attrs, ignored_removed_attrs, ignored_added_attrs);
+            fprintf(stdout, "\n[%s:%d:%s] [%s - old] size:%d attr:0x%x\n ", __FILE__, __LINE__, __func__, node->path, node->old_data->size, node->old_data->attr);
+            fprintf(stdout, "\n[%s:%d:%s] [%s - new] size:%d attr:0x%x\n ", __FILE__, __LINE__, __func__, node->path, node->new_data->size, node->new_data->attr);
+        }
+        */
+        if (node->checked & (NODE_ADDED|NODE_REMOVED))
+        {
+            summary[0] = get_file_type_char((node->checked & NODE_REMOVED ? node->old_data : node->new_data)->perm);
+            for(i=1;i<length;i++)
+            {
+                summary[i]=node->checked & NODE_ADDED?'+':'-';
             }
-        } else if (node->checked&NODE_CHANGED) {
+        }
+        else if (node->checked & NODE_CHANGED)
+        {
             char c, u, a, r, g, s;
-            for(i=0;i<length;i++) {
+            for(i=0; i < length; i++)
+            {
                 c = summary_char[i];
                 r = '-'; a = '+'; g = ':'; u = '.'; s = ' ';
-                switch (i) {
+                switch (i)
+                {
                     case 0:
-                        summary[i]=get_file_type_char((node->new_data)->perm);
+                        summary[i] = get_file_type_char((node->new_data)->perm);
                         continue;
                     case 2:
-                        if (summary_attributes[i]&(node->changed_attrs&(~ignored_changed_attrs)) && (node->old_data)->size > (node->new_data)->size) {
+                        if (summary_attributes[i] & (node->changed_attrs & (~ignored_changed_attrs)) && (node->old_data)->size > (node->new_data)->size)
+                        {
                             c = '<';
                         }
                         u = '=';
                         break;
                 }
-                if (summary_attributes[i]&node->changed_attrs&(forced_attrs|(~ignored_changed_attrs))) {
-                    summary[i]=c;
-                } else if (summary_attributes[i]&((node->old_data)->attr&~((node->new_data)->attr)&(forced_attrs|~(ignored_removed_attrs)))) {
-                    summary[i]=r;
-                } else if (summary_attributes[i]&~((node->old_data)->attr)&(node->new_data)->attr&(forced_attrs|~(ignored_added_attrs))) {
-                    summary[i]=a;
-                } else if (summary_attributes[i]& (
-                             (((node->old_data)->attr&~((node->new_data)->attr)&ignored_removed_attrs))|
-                            (~((node->old_data)->attr)&(node->new_data)->attr&ignored_added_attrs)|
-                             (((node->old_data)->attr&(node->new_data)->attr)&ignored_changed_attrs)
-                            ) ) {
-                    summary[i]=g;
-                } else if (summary_attributes[i]&((node->old_data)->attr&(node->new_data)->attr)) {
-                    summary[i]=u;
-                } else {
-                    summary[i]=s;
+
+                if (summary_attributes[i] & node->changed_attrs & (forced_attrs|(~ignored_changed_attrs)))
+                {
+                    summary[i] = c;
+                }
+                else if (summary_attributes[i] & ((node->old_data)->attr & ~((node->new_data)->attr) & (forced_attrs|~(ignored_removed_attrs))) )
+                {
+                    summary[i]= r ;
+                }
+                else if (summary_attributes[i] & ~((node->old_data)->attr) & (node->new_data)->attr & (forced_attrs|~(ignored_added_attrs)))
+                {
+                    summary[i]= a ;
+                }
+                else if ( summary_attributes[i] &
+                        (
+                         (((node->old_data)->attr & ~((node->new_data)->attr) & ignored_removed_attrs)) |
+                          (~((node->old_data)->attr) & (node->new_data)->attr & ignored_added_attrs) |
+                          (((node->old_data)->attr & (node->new_data)->attr) & ignored_changed_attrs)
+                          )
+                        )
+                {
+                    summary[i] = g;
+                }
+                else if (summary_attributes[i] & ((node->old_data)->attr & (node->new_data)->attr))
+                {
+                    summary[i] = u;
+                }
+                else
+                {
+                    summary[i] = s;
                 }
             }
         }
         summary[length]='\0';
         error(2,"\n%s: %s", summary, (node->checked&NODE_REMOVED?node->old_data:node->new_data)->filename);
         free(summary); summary=NULL;
-    } else {
-        if (node->checked&NODE_ADDED) {
+    }
+    else
+    {
+        if (node->checked&NODE_ADDED)
+        {
             error(2,"added: %s\n",(node->new_data)->filename);
-        } else if (node->checked&NODE_REMOVED) {
+        }
+        else if (node->checked&NODE_REMOVED)
+        {
             error(2,"removed: %s\n",(node->old_data)->filename);
-        } else if (node->checked&NODE_CHANGED) {
+        }
+        else if (node->checked&NODE_CHANGED)
+        {
             error(2,"changed: %s\n",(node->new_data)->filename);
         }
     }
 }
 
-static void print_dbline_attributes(db_line* oline, db_line* nline, DB_ATTR_TYPE
-        changed_attrs, DB_ATTR_TYPE force_attrs) {
+static void print_dbline_attributes(db_line* oline, db_line* nline, DB_ATTR_TYPE changed_attrs, DB_ATTR_TYPE force_attrs)
+{
     char **ovalue, **nvalue;
     int onumber, nnumber, olen, nlen, i, j, k, c;
     int length = sizeof(details_attributes)/sizeof(DB_ATTR_TYPE);
@@ -521,85 +597,131 @@ static void print_dbline_attributes(db_line* oline, db_line* nline, DB_ATTR_TYPE
     DB_ATTR_TYPE attrs;
     error(2,"\n");
     char *file_type = get_file_type_string((nline==NULL?oline:nline)->perm);
-    if (file_type) {
+    if (file_type)
+    {
         error(2,"%s: ", file_type);
     }
     error(2,"%s\n", (nline==NULL?oline:nline)->filename);
     attrs=force_attrs|(~(ignored_changed_attrs)&changed_attrs);
-    for (j=0; j < length; ++j) {
-        if (details_attributes[j]&attrs) {
-            onumber=get_attribute_values(details_attributes[j], oline, &ovalue);
-            nnumber=get_attribute_values(details_attributes[j], nline, &nvalue);
+    for (j=0; j < length; ++j)
+    {
+        if (details_attributes[j]&attrs)
+        {
+            onumber = get_attribute_values(details_attributes[j], oline, &ovalue);
+            nnumber = get_attribute_values(details_attributes[j], nline, &nvalue);
             i = 0;
-            while (i<onumber || i<nnumber) {
+            while (i<onumber || i<nnumber)
+            {
                 olen = i<onumber?strlen(ovalue[i]):0;
                 nlen = i<nnumber?strlen(nvalue[i]):0;
                 k = 0;
-                while (olen-p*k >= 0 || nlen-p*k >= 0) {
+                while (olen-p*k >= 0 || nlen-p*k >= 0)
+                {
                     c = k*(p-1);
-                    if (!onumber) {
+                    if (!onumber)
+                    {
                         error(2," %s%-9s%c %-*c  %.*s\n", width_details%2?"":" ", i+k?"":details_string[j], i+k?' ':':', p, ' ', p-1, nlen-c>0?&nvalue[i][c]:"");
-                    } else if (!nnumber) {
+                    }
+                    else if (!nnumber)
+                    {
                         error(2," %s%-9s%c %.*s\n", width_details%2?"":" ", i+k?"":details_string[j], i+k?' ':':', p-1, olen-c>0?&ovalue[i][c]:"");
-                    } else {
+                    }
+                    else
+                    {
                         error(2," %s%-9s%c %-*.*s| %.*s\n", width_details%2?"":" ", i+k?"":details_string[j], i+k?' ':':', p, p-1, olen-c>0?&ovalue[i][c]:"", p-1, nlen-c>0?&nvalue[i][c]:"");
                     }
                     k++;
                 }
                 ++i;
             }
-            for(i=0; i < onumber; ++i) { free(ovalue[i]); ovalue[i]=NULL; } free(ovalue); ovalue=NULL;
-            for(i=0; i < nnumber; ++i) { free(nvalue[i]); nvalue[i]=NULL; } free(nvalue); nvalue=NULL;
+
+            for(i=0; i < onumber; ++i)
+            {
+                free(ovalue[i]); ovalue[i]=NULL;
+            }
+            free(ovalue); ovalue=NULL;
+
+            for(i=0; i < nnumber; ++i)
+            {
+                free(nvalue[i]); nvalue[i]=NULL;
+            }
+            free(nvalue); nvalue=NULL;
         }
     }
 }
 
-static void print_attributes_added_node(db_line* line) {
+static void print_attributes_added_node(db_line* line)
+{
     print_dbline_attributes(NULL, line, 0, line->attr);
 }
 
-static void print_attributes_removed_node(db_line* line) {
+static void print_attributes_removed_node(db_line* line)
+{
     print_dbline_attributes(line, NULL, 0, line->attr);
 }
 
-static void terse_report(seltree* node) {
+static void terse_report(seltree* node)
+{
     list* r=NULL;
-    if ((node->checked&(DB_OLD|DB_NEW)) != 0) {
-        ntotal += ((node->checked&DB_NEW) != 0);
-        if (!(node->checked&DB_OLD)){
+
+    /*
+    if(strcmp(node->path, "/folder_b/folder_ba") == 0)
+    {
+        fprintf(stdout, "\n[%s:%d:%s] %s node->checked:0x%x\n", __FILE__, __LINE__, __func__, node->path, node->checked);
+    }
+    */
+
+    if ((node->checked & (DB_OLD|DB_NEW)) != 0)
+    {
+        ntotal += ((node->checked & DB_NEW) != 0);
+        if (!(node->checked & DB_OLD))
+        {
             /* File is in new db but not old. (ADDED) */
             /* unless it was moved in */
-            if (!((node->checked&NODE_ALLOW_NEW)||(node->checked&NODE_MOVED_IN))) {
+            if (!((node->checked & NODE_ALLOW_NEW)||(node->checked & NODE_MOVED_IN)))
+            {
                 nadd++;
-                node->checked|=NODE_ADDED;
+                node->checked |= NODE_ADDED;
             }
-        } else if (!(node->checked&DB_NEW)){
+        }
+        else if (!(node->checked & DB_NEW))
+        {
             /* File is in old db but not new. (REMOVED) */
             /* unless it was moved out */
-            if (!((node->checked&NODE_ALLOW_RM)||(node->checked&NODE_MOVED_OUT))) {
+            if (!((node->checked & NODE_ALLOW_RM)||(node->checked & NODE_MOVED_OUT)))
+            {
                 nrem++;
-                node->checked|=NODE_REMOVED;
+                node->checked |= NODE_REMOVED;
             }
-        } else if ((node->old_data!=NULL)&&(node->new_data!=NULL)){
+        }
+        else if ((node->old_data != NULL) && (node->new_data != NULL))
+        {
             /* File is in both db's and the data is still there. (CHANGED) */
-            if (!(node->checked&(NODE_MOVED_IN|NODE_MOVED_OUT))){
+            if (!(node->checked & (NODE_MOVED_IN|NODE_MOVED_OUT)))
+            {
                 nchg++;
-                node->checked|=NODE_CHANGED;
-            }else if (!((node->checked&NODE_ALLOW_NEW)||(node->checked&NODE_MOVED_IN))) {
+                node->checked |= NODE_CHANGED;
+            }
+            else if (!((node->checked & NODE_ALLOW_NEW)||(node->checked & NODE_MOVED_IN)))
+            {
                 nadd++;
-                node->checked|=NODE_ADDED;
-            }else if (!((node->checked&NODE_ALLOW_RM)||(node->checked&NODE_MOVED_OUT))) {
+                node->checked |= NODE_ADDED;
+            }
+            else if (!((node->checked & NODE_ALLOW_RM)||(node->checked & NODE_MOVED_OUT)))
+            {
                 nrem++;
-                node->checked|=NODE_REMOVED;
+                node->checked |= NODE_REMOVED;
             }
         }
     }
-    for (r=node->childs;r;r=r->next) {
+    for (r=node->childs;r;r=r->next)
+    {
         terse_report((seltree*)r->data);
     }
 }
 
-static void print_report_list(seltree* node, const int node_status) {
+static void print_report_list(seltree* node, const int node_status)
+{
     list* r=NULL;
     if (node->checked&node_status) {
         print_line(node);
@@ -609,16 +731,27 @@ static void print_report_list(seltree* node, const int node_status) {
     }
 }
 
-static void print_report_details(seltree* node) {
+static void print_report_details(seltree* node)
+{
     list* r=NULL;
-    if (conf->verbose_level>=5) {
-        if (node->checked&NODE_CHANGED) {
+    if (conf->verbose_level>=5)
+    {
+        if (node->checked & NODE_CHANGED)
+        {
             print_dbline_attributes(node->old_data, node->new_data, node->changed_attrs, (conf->verbose_level>=6?(
                 ((node->old_data)->attr&~((node->new_data)->attr)&~(ignored_removed_attrs))|(~((node->old_data)->attr)&(node->new_data)->attr&~(ignored_added_attrs))
                             ):0)|forced_attrs);
-        } else if ((conf->verbose_level>=7)) {
-            if (node->checked&NODE_ADDED) { print_attributes_added_node(node->new_data); }
-            if (node->checked&NODE_REMOVED) { print_attributes_removed_node(node->old_data); }
+        }
+        else if ((conf->verbose_level>=7))
+        {
+            if (node->checked & NODE_ADDED)
+            {
+                print_attributes_added_node(node->new_data);
+            }
+            if (node->checked & NODE_REMOVED)
+            {
+                print_attributes_removed_node(node->old_data);
+            }
         }
     }
     for(r=node->childs;r;r=r->next){
@@ -626,7 +759,8 @@ static void print_report_details(seltree* node) {
     }
 }
 
-static void print_report_header() {
+static void print_report_header()
+{
     char *time;
     int first = 1;
 
@@ -636,60 +770,91 @@ static void print_report_header() {
     free(time); time=NULL;
 
     error(0,_("AIDE"));
-    if(conf->action&(DO_COMPARE|DO_DIFF)) {
-        error(0,_(" found %sdifferences between %s%s!!\n"), (nadd||nrem||nchg)?"":"NO ", conf->action&DO_COMPARE?_("database and filesystem"):_("the two databases"), (nadd||nrem||nchg)?"":_(". Looks okay"));
-        if(conf->action&(DO_INIT)) {
-            error(0,_("New AIDE database written to %s\n"),conf->dbc_out.db_url->value);
+    if(conf->action & (DO_COMPARE|DO_DIFF))
+    {
+        error(0,_(" found %sdifferences between %s%s!!\n"), (nadd||nrem||nchg) ? "" : "NO ", conf->action & DO_COMPARE ? _("database and filesystem") : _("the two databases"), (nadd||nrem||nchg) ? "" : _(". Looks okay"));
+        if(conf->action & (DO_INIT))
+        {
+            error(0,_("New AIDE database written to %s\n"), conf->dbc_out.db_url->value);
         }
-    } else {
+    }
+    else
+    {
         error(0,_(" initialized database at %s\n"),conf->dbc_out.db_url->value);
     }
 
     if(conf->config_version)
         error(2,_("Config version used: %s\n"),conf->config_version);
 
-    if (conf->limit != NULL) {
+    if (conf->limit != NULL)
+    {
         error (2,_("Limit: %s"), conf->limit);
         first = 0;
     }
-    if (conf->action&(DO_INIT|DO_COMPARE) && conf->root_prefix_length > 0) {
-        if (first) { first=0; }
-        else { error (2," | "); }
+    if (conf->action & (DO_INIT|DO_COMPARE) && conf->root_prefix_length > 0)
+    {
+        if (first)
+        {
+            first=0;
+        }
+        else
+        {
+            error (2," | ");
+        }
         error (2,_("Root prefix: %s"),conf->root_prefix);
     }
-    if (conf->verbose_level != 5) {
-        if (first) { first=0; }
-        else { error (2," | "); }
+    if (conf->verbose_level != 5)
+    {
+        if (first)
+        {
+            first=0;
+        }
+        else
+        {
+            error (2," | ");
+        }
         error (2,_("Verbose level: %d"), conf->verbose_level);
     }
-    if (!first) { error (2,"\n"); }
-    if (ignored_added_attrs) {
+    if (!first)
+    {
+        error (2,"\n");
+    }
+    if (ignored_added_attrs)
+    {
         error (2,_("Ignored added attributes: %s\n"),report_attrs(ignored_added_attrs));
     }
-    if (ignored_removed_attrs) {
+    if (ignored_removed_attrs)
+    {
         error (2,_("Ignored removed attributes: %s\n"),report_attrs(ignored_removed_attrs));
     }
-    if (ignored_changed_attrs) {
+    if (ignored_changed_attrs)
+    {
         error (2,_("Ignored changed attributes: %s\n"),report_attrs(ignored_changed_attrs));
     }
-    if (forced_attrs) {
+    if (forced_attrs)
+    {
         error (2,_("Forced attributes: %s\n"),report_attrs(forced_attrs));
     }
 #ifdef WITH_E2FSATTRS
-    if (conf->report_ignore_e2fsattrs) {
+    if (conf->report_ignore_e2fsattrs)
+    {
         error (2,_("Ignored e2fs attributes: %s\n"), e2fsattrs2string(conf->report_ignore_e2fsattrs, 1) );
     }
 #endif
 
-    if(conf->action&(DO_COMPARE|DO_DIFF) && (nadd||nrem||nchg)) {
+    if(conf->action & (DO_COMPARE|DO_DIFF) && (nadd||nrem||nchg))
+    {
         error(0,_("\nSummary:\n  Total number of entries:\t%li\n  Added entries:\t\t%li\n"
                     "  Removed entries:\t\t%li\n  Changed entries:\t\t%li"), ntotal, nadd, nrem, nchg);
-    } else {
+    }
+    else
+    {
         error(0,_("\nNumber of entries:\t%li"), ntotal);
     }
 }
 
-static void print_report_databases() {
+static void print_report_databases()
+{
     if (conf->verbose_level>=2 && (conf->line_db_in || conf->line_db_out)) {
         error(2,(char*)report_top_format,_("The attributes of the (uncompressed) database(s)"));
         if (conf->line_db_in) {
@@ -736,50 +901,87 @@ void send_audit_report()
 }
 #endif /* WITH_AUDIT */
 
-int gen_report(seltree* node) {
+int gen_report(seltree* node)
+{
     forced_attrs = get_special_report_group("report_force_attrs");
     ignored_added_attrs = get_special_report_group("report_ignore_added_attrs");
     ignored_removed_attrs = get_special_report_group("report_ignore_removed_attrs");
     ignored_changed_attrs = get_special_report_group("report_ignore_changed_attrs");
 
+    //fprintf(stdout, "\n[%s:%d:%s] +++ gen_report() +++ nadd:%d nrem:%d nchg:%d \n", __FILE__, __LINE__, __func__, nadd, nrem, nchg);
+
     terse_report(node);
+
 #ifdef WITH_AUDIT
     send_audit_report();
 #endif
-    if ((nadd|nrem|nchg) > 0 || conf->report_quiet == 0) {
-    print_report_header();
-    if(conf->action&(DO_COMPARE|DO_DIFF) || (conf->action&DO_INIT && conf->report_detailed_init) ) {
-    if (conf->grouped) {
-        if (nadd) {
-            error(2,(char*)report_top_format,_("Added entries"));
-            print_report_list(node, NODE_ADDED);
+
+    //fprintf(stdout, "\n[%s:%d:%s] +++ gen_report() +++ nadd:%d nrem:%d nchg:%d \n", __FILE__, __LINE__, __func__, nadd, nrem, nchg);
+
+    if ((nadd|nrem|nchg) > 0 || conf->report_quiet == 0)
+    {
+        print_report_header();
+        if(conf->action & (DO_COMPARE|DO_DIFF) || (conf->action & DO_INIT && conf->report_detailed_init) )
+        {
+            if (conf->grouped)
+            {
+                if (nadd)
+                {
+                    error(2,(char*)report_top_format,_("Added entries"));
+                    print_report_list(node, NODE_ADDED);
+                }
+                if (nrem)
+                {
+                    error(2,(char*)report_top_format,_("Removed entries"));
+                    print_report_list(node, NODE_REMOVED);
+                }
+                if (nchg)
+                {
+                    error(2,(char*)report_top_format,_("Changed entries"));
+                    print_report_list(node, NODE_CHANGED);
+                }
+            }
+            else if (nadd || nrem || nchg)
+            {
+                if (nadd && nrem && nchg)
+                {
+                    error(2,(char*)report_top_format,_("Added, removed and changed entries"));
+                }
+                else if (nadd && nrem)
+                {
+                    error(2,(char*)report_top_format,_("Added and removed entries"));
+                }
+                else if (nadd && nchg)
+                {
+                    error(2,(char*)report_top_format,_("Added and changed entries"));
+                }
+                else if (nrem && nchg)
+                {
+                    error(2,(char*)report_top_format,_("Removed and changed entries"));
+                }
+                else if (nadd)
+                {
+                    error(2,(char*)report_top_format,_("Added entries"));
+                }
+                else if (nrem)
+                {
+                    error(2,(char*)report_top_format,_("Removed entries"));
+                }
+                else if (nchg)
+                {
+                    error(2,(char*)report_top_format,_("Changed entries"));
+                }
+                print_report_list(node, NODE_ADDED|NODE_REMOVED|NODE_CHANGED);
+            }
+            if (nadd || nrem || nchg)
+            {
+                error(nchg?5:7,(char*)report_top_format,_("Detailed information about changes"));
+                print_report_details(node);
+            }
         }
-        if (nrem) {
-            error(2,(char*)report_top_format,_("Removed entries"));
-            print_report_list(node, NODE_REMOVED);
-        }
-        if (nchg) {
-            error(2,(char*)report_top_format,_("Changed entries"));
-            print_report_list(node, NODE_CHANGED);
-        }
-    } else if (nadd || nrem || nchg) {
-        if (nadd && nrem && nchg) { error(2,(char*)report_top_format,_("Added, removed and changed entries")); }
-        else if (nadd && nrem) { error(2,(char*)report_top_format,_("Added and removed entries")); }
-        else if (nadd && nchg) { error(2,(char*)report_top_format,_("Added and changed entries")); }
-        else if (nrem && nchg) { error(2,(char*)report_top_format,_("Removed and changed entries")); }
-        else if (nadd) { error(2,(char*)report_top_format,_("Added entries")); }
-        else if (nrem) { error(2,(char*)report_top_format,_("Removed entries")); }
-        else if (nchg) { error(2,(char*)report_top_format,_("Changed entries")); }
-        print_report_list(node, NODE_ADDED|NODE_REMOVED|NODE_CHANGED);
-    }
-    if (nadd || nrem || nchg) {
-        error(nchg?5:7,(char*)report_top_format,_("Detailed information about changes"));
-        print_report_details(node);
-    }
-    }
-    print_report_databases();
-    conf->end_time=time(&(conf->end_time));
-    print_report_footer();
+        print_report_databases();
+        conf->end_time=time(&(conf->end_time));
+        print_report_footer();
     }
 
     return conf->action&(DO_COMPARE|DO_DIFF) ? (nadd!=0)*1+(nrem!=0)*2+(nchg!=0)*4 : 0;
@@ -788,4 +990,3 @@ int gen_report(seltree* node) {
 const char* aide_key_9=CONFHMACKEY_09;
 const char* db_key_9=DBHMACKEY_09;
 
-// vi: ts=8 sw=8
